@@ -1,0 +1,180 @@
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Bitter&family=Open+Sans&family=Sriracha&display=swap');
+*{padding:0;margin:0}
+html,body{height: 100%}
+body{
+    font-size: 14px;
+    font-family: 'Bitter', serif;
+    background-color: #eefcf5;
+}
+
+.title-question{
+    font-size:  30px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.title-answer{
+    font-size: 25px;
+}
+
+.process-bar{
+    width: 100%;
+    background-color: #fff;
+}
+
+.process{
+    width: 76%;
+    height: 10px;
+    background: #14cdc8;
+    animation-name: process;
+    animation-duration: 8s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes process{
+    0%{
+        width: 100%;
+        background-color: #14cdc8;
+    }
+    20%{
+        background-color: #ffff9f;
+    }
+    40%{
+        background-color: #ff4c30;
+    }
+    50%{
+        width: 0%;
+    }
+    60%{
+        background-color: #ff4c30;
+    }
+    80%{
+        background-color: #ffff9f;
+
+    }
+    100%{
+        width: 100%;
+        background-color: #14cdc8;
+    }
+}
+
+h1{
+    font-family: 'Sriracha', cursive;
+    font-size: 24pt;
+}
+
+.bg-success{
+    background-color: #b7c1ac!important;
+}
+
+.bg-danger{
+    background-color: #ff4c30!important;
+}
+
+.header{
+    width: 100%;
+}
+
+.container{
+    width: 1050px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.header-main{
+    width: 100%;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-self: flex-start;
+}
+
+.box-answer{
+    width: 50%;
+}
+
+.box-main{
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #006992;
+    transition: 0.2s ease;
+}
+
+.box-main:hover{
+    box-shadow: 1px 2px 4px 0.1px #0d0d0d;
+    background-color: #006992;
+    color: #eeecf3;
+    cursor: pointer;
+}
+
+.box{
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+}
+
+input{
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 5px;
+    outline: none;
+    border: 0.5px solid #080e2c;
+    text-align: center;
+    font-size: 17px;
+    font-family: 'Open sans', sans-serif;
+    margin-bottom: 7px;
+}
+
+form{
+    max-width: 200px;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    background-color: #dae7e6;
+    padding: 20px 35px 15px;
+}
+
+.space-btn{
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: flex-end;
+}
+
+button{
+    width: 100%;
+    outline: none;
+    border: none;
+    font-size: 18px;
+    text-transform: capitalize;
+    border-radius: 10px;
+    padding: 12px 0px 6px 0px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    font-family: 'Bangers', cursive;
+    letter-spacing: 2px;
+    box-shadow: 1px 2px 0px 1px #000;
+}
+
+button:hover{
+    padding-top: 10px;
+    box-shadow: 1px 2px 0px 0.2px #000;
+}
+
+button:focus{
+    padding-top: 8px;
+    box-shadow: none;
+}
