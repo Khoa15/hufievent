@@ -1,30 +1,32 @@
 const mongoose = require('mongoose')
 
 const data = new mongoose.Schema({
-    question: {
+    q: {
         type: String,
         trim: true,
     },
-    answer:[
+    a:[
         {
-            type: String
+            type: String,
+            trim: true
         }
     ],
-    qa:[
+    qa:
         {
             type: Number,
-            min:0,
-            max:1
+            min: 0,
+            max: 3
         }
-    ],
+    ,
     topic:{
-        type: Number
+        type: Number,
     },
     published:{
         type: Number,
         min: 0,
-        max: 1
+        max: 1,
+        default: 1
     }
 })
 
-module.exports = mongoose.model('Question', data)
+module.exports = mongoose.model('question', data)

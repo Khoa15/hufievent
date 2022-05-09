@@ -19,6 +19,17 @@ class Room{
         data[index].total++
         return true
     }
+    findRoom(roomId){
+        return this.room.findIndex(room => (room !== undefined) ? room.name === roomId : false)
+    }
+    createQuestion(roomId, questions){
+        const data = this.room
+        const index = this.findRoom(roomId)
+        if(index == -1) return false
+        data[index].questions = questions
+        console.log(this.getInfo(roomId))
+        return true
+    }
     getOutRoom(playerId){
         const data = this.room
         if(data === undefined) return true
@@ -40,6 +51,7 @@ class Room{
         return this.room
     }
 }
+
 const room = new Room()
 if(!this.navigator){
     module.exports = room

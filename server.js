@@ -2,12 +2,13 @@ require('dotenv').config()
 const express = require('express')
 const http = require('http')
 const db = require('./config/connect')
+const game = require('./public/assets/js/game')
 const app = express()
+const fetch = require('node-fetch')
 const server = http.createServer(app)
 const { Server } = require('socket.io')
 const io = new Server(server)
 const port = process.env.PORT
-const game = require('./public/assets/js/game')
 
 db.connect()
 
@@ -20,24 +21,31 @@ app.set('view engine', 'ejs')
 // })
 
 const homeRoute = require('./routes/homeRoute')
+const dataRoute = require('./routes/dataRoute')
 
 app.use('/', homeRoute)
-
+app.use('/api/data', dataRoute)
 io.on('connection', (socket)=>{
     console.log(`A user connected`)
 
     socket.on('joinRoom', (idRoom)=>{
         if(game.joinRoom(idRoom, socket.id)){
             socket.join(idRoom)
-            console.log(game.getInfo(idRoom))
             io.to(idRoom).emit('resJoinRoom', game.getInfo(idRoom))
         }
     })
 
-    socket.on('createRoom', async()=>{
+    socket.on('createRoom', ()=>{
         const createRoom = () => {
             let name = makeRoom()
-            if(game.creatRoom(name, socket.id)) return name
+            if(game.creatRoom(name, socket.id)){
+                fetch(`${process.env.SERVER}/api/data/?limit=10`,{method: 'get'}).then(response => response.json()).then(data =>{
+
+                    game.createQuestion(name, data.data)
+                })
+                
+                return name
+            }
             createRoom()
         }
         const room = createRoom()
