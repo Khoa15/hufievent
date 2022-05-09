@@ -25,7 +25,7 @@ body{
     width: 76%;
     height: 10px;
     background: #14cdc8;
-    animation-name: process;
+    animation-name: loading;
     animation-duration: 8s;
     animation-iteration-count: infinite;
 }
@@ -55,6 +55,32 @@ body{
         width: 100%;
         background-color: #14cdc8;
     }
+}
+
+.loading{
+    height: 60px;
+    width: 60px;
+    border: 5px solid #f6efe9;
+    border-top: 5px solid #cdd1e4;
+    border-radius: 50%;
+    animation: loading 1s linear infinite
+}
+
+@keyframes loading {
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
+
+.text-center{
+    text-align: center;
+}
+
+.hide{
+    display: none;
 }
 
 h1{
