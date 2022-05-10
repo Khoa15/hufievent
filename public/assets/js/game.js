@@ -3,11 +3,12 @@ class Room{
         this.room = []
         this.length = 0
     }
-    creatRoom(_id, playerId){
+    createRoom(_id, playerId){
         if(this.room.find(room => (room !== undefined) ? room.name === _id : false) !== undefined) return false
         this.room[this.length] = {name: _id, player: [], total: 0}
         this.room[this.length].player[this.room[this.length].total] = {id: playerId}
         this.room[this.length].total++
+        this.room.status = 0
         this.length++
         return true
     }
@@ -27,7 +28,6 @@ class Room{
         const index = this.findRoom(roomId)
         if(index == -1) return false
         data[index].questions = questions
-        console.log(this.getInfo(roomId))
         return true
     }
     getOutRoom(playerId){
@@ -46,6 +46,13 @@ class Room{
     }
     getInfo(roomId){
         return this.room.find(room => (room !== undefined) ? room.name===roomId : false)
+    }
+    openRoom(roomId){
+        // this.getInfo(roomId).status = 1
+        console.log(this.getInfo(roomId))
+    }
+    startRoom(roomId){
+        this.getInfo(roomId).status = 2
     }
     list(){
         return this.room
