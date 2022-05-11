@@ -3,6 +3,7 @@ const express = require('express')
 const http = require('http')
 const db = require('./config/connect')
 const game = require('./public/assets/js/game')
+const cors = require('cors')
 const app = express()
 const fetch = require('node-fetch')
 const server = http.createServer(app)
@@ -11,7 +12,7 @@ const io = new Server(server)
 const port = process.env.PORT
 
 db.connect()
-
+app.use(cors())
 app.use(express.static('public'))
 
 app.set('views', './public')
