@@ -33,32 +33,40 @@ io.on('connection', (socket)=>{
             socket.join(idRoom)
             io.to(idRoom).emit('resJoinRoom', game.getInfo(idRoom))
         }else{
-            socket.emit('joinFailed')
+            socket.emit('resJoinRoom', false)
         }
     })
 
     socket.on('openGame', (idRoom)=>{
-        console.log(idRoom, 'idRoom')
         game.openRoom(idRoom)
-        io.to(idRoom).emit('statusRoom', 1)
+        io.to(idRoom).emit('statusGame', 1)
     })
 
-    socket.on('createRoom', ()=>{
+    socket.on('startGame', (idRoom)=>{
+        io.to(idRoom).emit('startGame')
+    })
+
+    socket.on('setName', ({username, _index})=>{
+        if(game.setName(socket.id, username, _index))
+            io.to(game.room[_index].name).emit('updateState', game.room[_index])
+    })
+
+    socket.on('createRoom',  ()=>{
         const createRoom = () => {
             let name = makeRoom()
             if(game.createRoom(name, socket.id)){
                 socket.join(name)
                 fetch(`${process.env.SERVER}/api/data/?limit=10`,{method: 'get'}).then(response => response.json()).then(data =>{
                     game.createQuestion(name, data.data)
+                    io.to(name).emit('roomName', game.getInfo(name))
                 })
                 
                 return name
             }
             createRoom()
         }
-        const room = createRoom()
-        socket.join(room)
-        io.to(room).emit('roomName', room)
+        createRoom()
+        //socket.join(room)
     })
 
     socket.on('disconnect', ()=>{

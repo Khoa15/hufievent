@@ -6,22 +6,26 @@ class Room{
     createRoom(_id, playerId){
         if(this.room.find(room => (room !== undefined) ? room.name === _id : false) !== undefined) return false
         this.room[this.length] = {name: _id, player: [], total: 0}
-        this.room[this.length].player[this.room[this.length].total] = {id: playerId}
+        //this.room[this.length].player[this.room[this.length].total] = {id: playerId}
         this.room[this.length].total++
-        this.room.status = 0
+        this.room[this.length].status = 0
+        this.room[this.length]._i = this.length
         this.length++
         return true
     }
-    joinRoom(id, playerId){
+    joinRoom(id, playerId, permit=1){
         const data = this.room
         const index = data.findIndex(room => (room !== undefined) ? room.name === id : false)
         if(index == -1) return false
-        data[index].player = [...data[index].player, {id: playerId}]
+        data[index].player = [...data[index].player, {id: playerId, permit: permit}]
         data[index].total++
         return true
     }
     findRoom(roomId){
         return this.room.findIndex(room => (room !== undefined) ? room.name === roomId : false)
+    }
+    findPlayer(room, playerId){
+        return (room === undefined) ? false : room.player.findIndex(player => (player === undefined) ? false : player.id === playerId)
     }
     createQuestion(roomId, questions){
         const data = this.room
@@ -33,9 +37,9 @@ class Room{
     getOutRoom(playerId){
         const data = this.room
         if(data === undefined) return true
-        const index = data.findIndex(room => (room !== undefined) ? room.player.find(player=>player.id===playerId) : false)
+        const index = data.findIndex(room => (room !== undefined) ? room.player.find(player=> (player !== undefined) ? player.id===playerId : false) : false)
         if(index === -1) return false
-        const iPlayer = data[index].player.findIndex(player => player.id===playerId)
+        const iPlayer = this.findPlayer(data[index], playerId)
         data[index].total--
         delete data[index].player[iPlayer]
         if(data[index].total === 0){
@@ -47,9 +51,18 @@ class Room{
     getInfo(roomId){
         return this.room.find(room => (room !== undefined) ? room.name===roomId : false)
     }
-    openRoom(roomId){
-        // this.getInfo(roomId).status = 1
-        console.log(this.getInfo(roomId))
+    openRoom(_index){
+        const data = this.room
+        data[_index].status = 1
+        return true
+    }
+    setName(playerId, username, _index){
+        const room = this.room[_index]
+        const iPlayer = this.findPlayer(room, playerId)
+        if(iPlayer === false) return false
+        const player = room.player[iPlayer]
+        player.name = username
+        return true
     }
     startRoom(roomId){
         this.getInfo(roomId).status = 2

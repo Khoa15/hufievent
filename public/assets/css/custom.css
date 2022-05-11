@@ -29,7 +29,7 @@ body{
     width: 76%;
     height: 10px;
     background: #14cdc8;
-    animation-name: loading;
+    animation-name: process;
     animation-duration: 8s;
     animation-iteration-count: infinite;
 }
@@ -39,8 +39,8 @@ body{
         width: 100%;
         background-color: #14cdc8;
     }
-    20%{
-        background-color: #ffff9f;
+    30%{
+        background-color: #f39c12;
     }
     40%{
         background-color: #ff4c30;
@@ -51,9 +51,8 @@ body{
     60%{
         background-color: #ff4c30;
     }
-    80%{
-        background-color: #ffff9f;
-
+    70%{
+        background-color: #f39c12;
     }
     100%{
         width: 100%;
@@ -81,10 +80,6 @@ body{
 
 .text-center{
     text-align: center;
-}
-
-.hide{
-    display: none;
 }
 
 h1{
@@ -125,6 +120,7 @@ h1{
     flex-direction: row;
     flex-wrap: wrap;
     align-self: flex-start;
+    height: inherit; 
 }
 
 .box-answer{
@@ -152,6 +148,7 @@ h1{
     flex-direction: row;
     flex-wrap: wrap;
     align-content: center;
+    justify-content: center;
 }
 
 input{
@@ -207,4 +204,120 @@ button:hover{
 button:focus{
     padding-top: 8px;
     box-shadow: none;
+}
+
+.queue-room{
+    display: flex;
+    align-self: flex-start;
+    height: inherit;
+    width: inherit;
+}
+
+.room-brand{
+    margin: 20px 0px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+}
+
+.room-brand p {
+    font-size: 23pt;
+    margin: 0px 20px;
+}
+
+.room-footer{
+    position:absolute;
+    bottom: 10px;
+    font-size: 30pt;
+    width: inherit;
+    text-align: center;
+    font-family: 'Sriracha', cursive;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.room-status{
+    position: absolute;
+    right: 0;
+    display: flex;
+    align-items: center;
+    margin: 10px;
+}
+
+.game{
+    height: inherit;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.game .main{
+    height: unset
+}
+
+.hide{
+    display: none;
+}
+
+.btn-sm{
+    padding: 7px 10px 4px;
+    margin: unset;
+    width: unset;
+    font-size: 13px;
+    font-family: 'Sriracha', cursive;
+}
+
+.btn-sm:hover{
+    padding-top: 5px;
+    box-shadow: 1px 2px 0px 0.3px #000;
+}
+.btn-sm:focus{
+    box-shadow: none;
+}
+
+#btn-start-game{
+    position: relative;
+    background-color: #b7f4d8;
+    box-shadow: 1px 2px 0px 0.5px #56a187;
+    transition-duration: 0.4s;
+    -webkit-transition-duration: 0.4s; /*safari*/
+}
+#btn-start-game:hover{
+    padding: 7px 10px 4px;
+    box-shadow: 0.5px 1px 0px 0.5px #56a187;
+}
+
+#btn-start-game::after{
+    content: "";
+    opacity: 0;
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    transition: all 0.5s;
+    box-shadow: 0 0 10px 40px #67809f;
+}
+
+#btn-start-game:active::after{
+    box-shadow: 0 0 0 0 #67809f;
+    position: absolute;
+    border-radius: 4em;
+    left: 0;
+    top: 0;
+    opacity: 1;
+    transition: 0s;
+}
+
+#btn-start-game:active{
+    top: 1px;
+}
+
+.size-l{
+    height: 20px;
 }

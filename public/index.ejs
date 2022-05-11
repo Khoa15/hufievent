@@ -9,9 +9,11 @@
 </head>
 <body>
     <div class="box">
-        <div class="main container">
+        <div class="process-bar hide" id="main-loading">
+            <div class="process size-l"></div>
+        </div>
+        <div class="main container" id="queue">
             <form class="form" step="1">
-                <!-- <h1>PPC</h1> -->
                 <div class="loading-bar hide">
                     <div class="loading"></div>
                 </div>
@@ -31,42 +33,56 @@
                     <a href="javascript:;" style="display: block;text-align:right" id="btn-next-step">Bắt đầu &rarr;</a>
                 </div>
             </form>
-            <div step="2">
-            </div>
-        </div>
-        <!-- <div class="header">
-            <div class="process-bar">
-                <div class="process"></div>
-            </div>
-            <div class="header-main bg-success">
-                <div class="title-question">
-                    Có tất cả bao nhiêu thuật toán sắp xếp trong lập trình ?
-                </div>
-            </div>
-        </div>
+            <div class="queue-room hide" step="2">
+               <div class="room-brand" id="list-user-queue">
+                   
+               </div>
+               <div class="room-status hide">
+                   <p><span id="total-user">00</span>/<span id="limit-user">00</span></p>
+                   <button class="btn-sm" id="btn-start-game" style="margin-left: 5px" id="startGame">Bắt đầu</button>
+               </div>
+               <div class="room-footer">
+                   <div id="room-name">
 
-        <div class="main container">
-            <div class="box-answer">
-                <div class="box-main" id="ans" index="0" onclick="checkAns(this)">
-                    <p class="title-answer">5</p>
-                </div>
+                   </div>
+               </div>
             </div>
-            <div class="box-answer">
-                <div class="box-main" id="ans" index="0" onclick="checkAns(this)">
-                    <p class="title-answer">8</p>
+        </div>
+        <div class="game hide">
+                <div class="header">
+                    <div class="process-bar">
+                        <div class="process"></div>
+                    </div>
+                    <div class="header-main bg-success">
+                        <div class="title-question">
+                            Có tất cả bao nhiêu thuật toán sắp xếp trong lập trình ?
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="box-answer">
-                <div class="box-main" id="ans" index="0" onclick="checkAns(this)">
-                    <p class="title-answer">11</p>
+        
+                <div class="main container" id="list-answers">
+                    <div class="box-answer">
+                        <div class="box-main" index="0" onclick="checkAns(this)">
+                            <p class="title-answer" id="ans">5</p>
+                        </div>
+                    </div>
+                    <div class="box-answer">
+                        <div class="box-main" index="1" onclick="checkAns(this)">
+                            <p class="title-answer" id="ans">8</p>
+                        </div>
+                    </div>
+                    <div class="box-answer">
+                        <div class="box-main" index="2" onclick="checkAns(this)">
+                            <p class="title-answer" id="ans">11</p>
+                        </div>
+                    </div>
+                    <div class="box-answer">
+                        <div class="box-main" index="3" onclick="checkAns(this)">
+                            <p class="title-answer" id="ans">16</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="box-answer">
-                <div class="box-main" id="ans" index="0" onclick="checkAns(this)">
-                    <p class="title-answer">16</p>
-                </div>
-            </div>
-        </div> -->
+        </div>
     </div>
 
     <script src="./assets/js/game.js"></script>
