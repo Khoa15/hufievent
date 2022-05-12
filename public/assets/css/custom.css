@@ -241,23 +241,36 @@ button:focus{
 }
 
 .queue-room{
+    position: relative;
     display: flex;
     align-self: flex-start;
     height: inherit;
-    width: inherit;
+    width: 100%;
 }
 
 .room-brand{
     margin: 20px 0px;
-    display: flex;
+    /* display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
-
+    flex-wrap: wrap; */
 }
 
-.room-brand p {
-    font-size: 23pt;
+.room-brand p{
     margin: 0px 20px;
+    float: left;
+}
+
+@media (min-width: 200px) {
+    .room-brand p{
+        font-size: 13pt;
+        margin: 0px 10px;
+    }
+}
+
+@media (min-width: 1000px) {
+    .room-brand p {
+        font-size: 23pt;
+    }
 }
 
 .room-footer{
@@ -271,6 +284,12 @@ button:focus{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+@media (min-width: 200px){
+    .room-footer{
+        font-size: 20pt;
+    }
 }
 
 .room-status{
