@@ -12,14 +12,13 @@ const io = new Server(server)
 const port = process.env.PORT
 
 db.connect()
-app.use(cors())
+app.use(cors({
+    origin: process.env.SERVER
+}))
 app.use(express.static('public'))
 
 app.set('views', './public')
 app.set('view engine', 'ejs')
-// app.get('/', (req, res)=>{
-//     res.sendFile(__dirname + '/index.html')
-// })
 
 const homeRoute = require('./routes/homeRoute')
 const dataRoute = require('./routes/dataRoute')
