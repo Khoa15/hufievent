@@ -14,10 +14,14 @@ body{
 .title-question{
     font-size:  30px;
     font-family: 'Open Sans', sans-serif;
+    text-align: justify;
+    margin: 0px 20px;
+    text-transform: capitalize;
 }
 
 .title-answer{
     font-size: 25px;
+    text-transform: capitalize;
 }
 
 .process-bar{
@@ -111,17 +115,47 @@ h1{
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0px 7px;
 }
 
 .main{
     display: flex;
     align-content: center;
+    align-items: center;
     justify-content: center;
     flex-direction: row;
     flex-wrap: wrap;
     align-self: flex-start;
     height: inherit; 
 }
+
+.main[view="rank"]{
+    align-content: flex-start;
+}
+
+table{
+    width: 100%;
+    margin: 10px 0px 0px;
+}
+
+table *{
+    text-align: center;
+}
+
+table thead{
+    font-size: 15pt;
+}
+table tbody{
+    font-size: 14pt;
+}
+tbody tr,td{
+    padding-top: 10px;
+}
+
+.text-left{
+    text-align: left;
+}
+
 
 .box-answer{
     width: 50%;

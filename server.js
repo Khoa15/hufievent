@@ -52,12 +52,17 @@ io.on('connection', (socket)=>{
             io.to(game.room[_index].name).emit('updateState', game.room[_index])
     })
 
+    socket.on('savePlayer', ({_index, players})=>{
+        game.room[_index].player = players
+        io.to(game.room[_index].name).emit('updateState', game.room[_index])
+    })
+
     socket.on('createRoom',  ()=>{
         const createRoom = () => {
             let name = makeRoom()
             if(game.createRoom(name, socket.id)){
                 socket.join(name)
-                fetch(`${process.env.SERVER}/api/data/?limit=10`,{method: 'get'}).then(response => response.json()).then(data =>{
+                fetch(`${process.env.SERVER}/api/data/?limit=2`,{method: 'get'}).then(response => response.json()).then(data =>{
                     game.createQuestion(name, data.data)
                     io.to(name).emit('roomName', game.getInfo(name))
                 })

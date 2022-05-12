@@ -17,7 +17,7 @@ class Room{
         const data = this.room
         const index = data.findIndex(room => (room !== undefined) ? room.name === id : false)
         if(index == -1) return false
-        data[index].player = [...data[index].player, {id: playerId, permit: permit}]
+        data[index].player = [...data[index].player, {id: playerId, score: 0, a:[], permit: permit}]
         data[index].total++
         return true
     }
