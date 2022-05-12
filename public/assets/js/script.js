@@ -159,7 +159,7 @@ function createText(text){
 function endGame(){
     gameView.classList.add('hide')
     boardScore.classList.remove('hide')
-    const rank_player = roomClient.player.sort((a, b)=> a.score + b.score)
+    const rank_player = roomClient.player.sort((a, b)=> b.score - a.score)
     let view = document.querySelector('.viewRank')
     view.innerHTML = ""
     for (let i = 0; i < rank_player.length; i++) {
