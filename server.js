@@ -9,7 +9,7 @@ const fetch = require('node-fetch')
 const server = http.createServer(app)
 const { Server } = require('socket.io')
 const io = new Server(server)
-const port = process.env.PORT
+const port = process.env.PORT || 5050
 
 db.connect()
 app.use(cors({
