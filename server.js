@@ -44,6 +44,7 @@ io.on('connection', (socket)=>{
 
     socket.on('startGame', (idRoom)=>{
         io.to(idRoom).emit('startGame')
+        io.to(idRoom).emit('statusGame', 2)
     })
 
     socket.on('setName', ({username, _index})=>{
@@ -75,8 +76,9 @@ io.on('connection', (socket)=>{
     })
 
     socket.on('disconnect', ()=>{
-        console.log(game.getInfo(game.getOutRoom(socket.id)))
-        console.log(`User disconnected`)
+        const idRoom = game.getOutRoom(socket.id)
+        const data = game.getInfo(idRoom)
+        io.to(idRoom).emit('updateState', data)
     })
 })
 

@@ -12,8 +12,12 @@ body {
 }
 
 body {
-  font: 14px 'Bitter', serif;
+  font: 16px 'Bitter', serif;
   background: #eefcf5;
+}
+
+form{
+  margin-bottom: 10px;
 }
 
 .title-question {
@@ -128,6 +132,10 @@ h1 {
   padding: 0px 7px;
 }
 
+label{
+  margin-bottom: 7px;
+}
+
 .main {
   display: flex;
   align-content: center;
@@ -137,6 +145,12 @@ h1 {
   flex-wrap: wrap;
   align-self: flex-start;
   height: inherit;
+}
+
+.main select{
+  text-align: center;
+  padding: 7px 0;
+  font-size: 15px;
 }
 
 .main[view="rank"] {
@@ -209,7 +223,7 @@ input {
   margin-bottom: 7px;
 }
 
-form {
+.form {
   background: #dae7e6;
   max-width: 200px;
   display: flex;
@@ -383,4 +397,55 @@ button:focus {
 
 .size-l {
   height: 20px;
+}
+
+.btn-a{
+  font-family: unset;
+  border: none;
+  font-size: 13px;
+  color: blue;
+  text-decoration: underline;
+  background-color: unset;
+  box-shadow: unset;
+  padding: unset;
+  margin: unset;
+}
+
+.btn-a:hover{
+  box-shadow: unset;
+  margin: unset;
+  padding:unset;
+}
+
+.grid{
+  display: flex;
+  flex-direction: row;
+}
+
+select{
+  margin-bottom: 7px;
+}
+
+.group-input{
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.group-input label{
+  width: 100%;
+}
+
+.group-input input,span{
+  padding: 7px 5px;
+  margin: unset;
+  border: unset;
+  border-radius: unset;
+  background-color: #fff;
+  font-size: 15px;
+}
+.group-input span{
+  font-size: 16.8px;
 }

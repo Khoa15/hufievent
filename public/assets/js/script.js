@@ -1,3 +1,5 @@
+const $ = document.querySelector.bind(document)
+const $$ = document.querySelectorAll.bind(document)
 const socket = io();
 
 
@@ -11,17 +13,16 @@ const gameView = document.querySelector('.game');
 const boardScore = document.querySelector('[view="rank"]');
 let roomClient = {};
 
-
 const toggleFormData = (status=1) => {
     let sts = (status) ? 'unset' : 'none';
-    document.querySelector('div#form-data').style.display = sts;
+    document.querySelector('form#form-data').style.display = sts;
 }
 
 const toggleLoadingBar = (status=1) => {
     let sts = (status) ? 'unset' : 'none';
     document.querySelector('div.loading-bar').style.display = sts;
 }
-document.querySelector('form.form').addEventListener('submit', (e)=>{
+$('form#form-data[step="1"]').addEventListener('submit', (e)=>{
     e.preventDefault();
     toggleFormData(0);
     toggleLoadingBar();
@@ -39,6 +40,30 @@ document.querySelector('form.form').addEventListener('submit', (e)=>{
     })
 })
 
+$('form[step="2"]').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    btnOpenGame.click();// open or join room
+})
+
+btnOpenGame.addEventListener('click', ()=>{
+    let username = document.getElementById('username');
+    if(username.value==false){
+        username.style.border = '0.5px solid red';
+        return false;
+    }
+    username.style.border = '0.5px solid black';
+    socket.emit('openGame', roomClient._i);
+    socket.emit('setName', ({username: username.value, _index: roomClient._i}));
+    document.querySelector("div.form").style.display = 'none';
+    document.querySelector('.queue-room').classList.remove('hide');
+    if(socket.id === roomClient.player[0].id){
+        document.querySelector('.room-status').classList.remove('hide');
+    }else{
+        document.querySelector('.room-status').innerHTML = "";
+    }
+    document.querySelector('.room-footer #room-name').innerHTML = roomClient.name;
+})
+
 btnCreRoom.addEventListener('click', ()=>{
     socket.emit('createRoom');
     toggleFormData(0);
@@ -54,31 +79,17 @@ btnCreRoom.addEventListener('click', ()=>{
     })
 })
 
-btnOpenGame.addEventListener('click', ()=>{
-    let username = document.getElementById('username');
-    if(username.value==false){
-        username.style.border = '0.5px solid red';
-        return false;
-    }
-    username.style.border = '0.5px solid black';
-    socket.emit('openGame', roomClient._i);
-    socket.emit('setName', ({username: username.value, _index: roomClient._i}));
-    document.querySelector("form.form").style.display = 'none';
-    document.querySelector('.queue-room').classList.remove('hide');
-    if(socket.id === roomClient.player[0].id){
-        document.querySelector('.room-status').classList.remove('hide');
-    }else{
-        document.querySelector('.room-status').innerHTML = "";
-    }
-    document.querySelector('.room-footer #room-name').innerHTML = roomClient.name;
-})
 socket.on('statusGame', (sts)=>{
     roomClient.status = sts;
 })
 socket.on('updateState', (room)=>{
+    if(room.player[0] === null){
+        window.location.reload()
+    }
     roomClient = room;
     if(roomClient.status === 1){
         showList(roomClient.player);
+        if(socket.id === roomClient.player[0].id) $('#total-user').innerHTML = (roomClient.total < 10) ? `0${roomClient.total}` : roomClient.total
     }
 })
 
@@ -176,3 +187,13 @@ function endGame(){
         view.appendChild(tr);
     }
 }
+
+$$(`[room-name]`).forEach(element => {
+    element.addEventListener('click', ()=>{
+        const room = element.innerHTML
+    
+        navigator.clipboard.writeText(room)
+    
+        console.log('Copied the text: ' + room)
+    })
+});

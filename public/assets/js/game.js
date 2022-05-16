@@ -7,7 +7,6 @@ class Room{
         if(this.room.find(room => (room !== undefined) ? room.name === _id : false) !== undefined) return false
         this.room[this.length] = {name: _id, player: [], total: 0}
         //this.room[this.length].player[this.room[this.length].total] = {id: playerId}
-        this.room[this.length].total++
         this.room[this.length].status = 0
         this.room[this.length]._i = this.length
         this.length++

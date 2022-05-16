@@ -9,7 +9,7 @@
     <meta name="Description" CONTENT="Hufi event, tạo quiz game thời gian thực do sinh viên hufi thực hiện">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <title>PPC</title>
-    <link rel="stylesheet" href="./assets/css/custom.min.css">
+    <link rel="stylesheet" href="./assets/css/custom.css">
 </head>
 <body>
     <div class="box">
@@ -17,12 +17,12 @@
             <div class="process size-l"></div>
         </div>
         <div class="main container" id="queue">
-            <form class="form" step="1">
+            <div class="form" step="1">
                 <div class="loading-bar hide">
                     <div class="loading"></div>
                 </div>
                 <div id="message-success"></div>
-                <div id="form-data" step="1">
+                <!-- <form id="form-data" step="1">
                     <input type="text" id="id-room" placeholder="Nhập mã phòng" autofocus autocomplete="off" required>
                     <div class="space-btn">
                         <button type="submit" class="bg-success" id="btn-join">Tham Gia</button>
@@ -30,13 +30,41 @@
                     <div class="space-btn">
                         <button type="button" id="btn-create-room" >Tạo phòng</button>
                     </div>
-                </div>
-                <div class="hide" id="next-step" step="2">
-                    <h1 class="id-room text-center"></h1>
-                    <input type="text" placeholder="Nhập tên" id="username">
-                    <a href="javascript:;" style="display: block;text-align:right" id="btn-next-step">Bắt đầu &rarr;</a>
-                </div>
-            </form>
+                </form>-->
+                <form class="" id="next-step" step="2">
+                    <h1 class="id-room text-center" room-name="true"></h1>
+                    <input type="text" placeholder="Nhập tên" id="username" autofocus>
+                    <div class="main hide" id="box-setting"> 
+                        <select name="topic" id="inp-topic">
+                            <option disabled selected>Chủ đề random</option>
+                            <option>Sinh hoạt công dân đầu khóa</option>
+                            <option>Sinh hoạt công dân giữa khóa</option>
+                        </select>
+    
+                        <label>Số lượng người chơi</label>
+                        <div class="group-input">
+                            <input type="number" value="10" min="1" name="limit-players" id="inp-limit-players">
+                            <span>/500</span>
+                        </div>
+                        <label>Số lượng câu hỏi</label>
+                        <div class="group-input">
+                            <input type="number" value="5" min="1" name="limit-questions" id="inp-limit-questions">
+                            <span>/100</span>
+                        </div>
+                        <label>Thời gian(s)</label>
+                        <div class="group-input">
+                            <input type="number" value="10" min="5" name="limit-time" id="inp-limit-time">
+                            <span>/60</span>
+                        </div>
+                        <label for="show-rank" class="text-center">Hiện xếp hạng sau mỗi câu hỏi</label>
+                        <input type="checkbox" id="show-rank" name="rank">
+                    </div>
+                    <div class="grid">
+                        <button class="btn-a" id="setting">Cài đặt</button>
+                        <button type="submit" class="btn-a" id="btn-next-step">Bắt đầu &rarr;</button>
+                    </div>
+                </form>
+            </div>
             <div class="queue-room hide" step="2">
                <div class="room-brand" id="list-user-queue">
                    
@@ -46,7 +74,7 @@
                    <button class="btn-sm" id="btn-start-game" style="margin-left: 5px" id="startGame">Bắt đầu</button>
                </div>
                <div class="room-footer">
-                   <div id="room-name">
+                   <div id="room-name" room-name="true">
 
                    </div>
                </div>
@@ -105,6 +133,6 @@
 
     <script src="./assets/js/game.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="./assets/js/script.min.js"></script>
+    <script src="./assets/js/script.js"></script>
 </body>
 </html>
