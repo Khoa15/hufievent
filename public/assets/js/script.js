@@ -3,81 +3,92 @@ const $$ = document.querySelectorAll.bind(document)
 const socket = io();
 
 
-const btnJoin = document.querySelector('#btn-join');
-const btnCreRoom = document.querySelector('#btn-create-room');
-const btnOpenGame = document.querySelector('#btn-next-step');
-const idRoom = document.querySelector('#id-room');
-const username = document.querySelector('#username');
-const button = document.querySelectorAll('button');
-const gameView = document.querySelector('.game');
-const boardScore = document.querySelector('[view="rank"]');
+const btnJoin = $('#btn-join');
+const btnCreRoom = $('#btn-create-room');
+const btnOpenGame = $('#btn-next-step');
+const idRoom = $('#id-room');
+const username = $('#username');
+const button = $$('button');
+const gameView = $('.game');
+const boardScore = $('[view="rank"]');
 let roomClient = {};
 
 const toggleFormData = (status=1) => {
     let sts = (status) ? 'unset' : 'none';
-    document.querySelector('form#form-data').style.display = sts;
+    $('form#form-data').style.display = sts;
 }
 
 const toggleLoadingBar = (status=1) => {
     let sts = (status) ? 'unset' : 'none';
-    document.querySelector('div.loading-bar').style.display = sts;
+    $('div.loading-bar').style.display = sts;
 }
-$('form#form-data[step="1"]').addEventListener('submit', (e)=>{
-    e.preventDefault();
-    toggleFormData(0);
-    toggleLoadingBar();
-    socket.emit('joinRoom', idRoom.value);
-    socket.on('resJoinRoom', (res)=>{
-        if(res === false){
-            toggleFormData();
-            toggleLoadingBar(0);
-            return false;
-        }
-        document.querySelector('[step="2"]').style.display = 'unset';
-        document.querySelector('h1.id-room').innerHTML = 'Thành công';
-        toggleLoadingBar(0);
-        roomClient = res;
-    })
-})
+// $('form#form-data[step="1"]').addEventListener('submit', (e)=>{
+//     e.preventDefault();
+//     toggleFormData(0);
+//     toggleLoadingBar();
+//     socket.emit('joinRoom', idRoom.value);
+//     socket.on('resJoinRoom', (res)=>{
+//         if(res === false){
+//             toggleFormData();
+//             toggleLoadingBar(0);
+//             return false;
+//         }
+//         $('[step="2"]').style.display = 'unset';
+//         $('h1.id-room').innerHTML = 'Thành công';
+//         toggleLoadingBar(0);
+//         roomClient = res;
+//     })
+// })
 
-$('form[step="2"]').addEventListener('submit', (e)=>{
-    e.preventDefault();
-    btnOpenGame.click();// open or join room
-})
+// $('form[step="2"]').addEventListener('submit', (e)=>{
+//     e.preventDefault();
+//     btnOpenGame.click();// open or join room
+// })
 
-btnOpenGame.addEventListener('click', ()=>{
-    let username = document.getElementById('username');
+btnOpenGame.addEventListener('click', (e)=>{
+    e.preventDefault()
+    let formData = []
+    let username = $('#username');
+    let field = $$(`#box-setting input`);
     if(username.value==false){
         username.style.border = '0.5px solid red';
         return false;
     }
+    let ele = {}
+    for(let setting of field){
+        ele.push(setting.name)
+        ele[setting.name] = setting.value
+    }
+    formData.push(ele)
+    console.log(formData[0])
+    return false
     username.style.border = '0.5px solid black';
     socket.emit('openGame', roomClient._i);
     socket.emit('setName', ({username: username.value, _index: roomClient._i}));
-    document.querySelector("div.form").style.display = 'none';
-    document.querySelector('.queue-room').classList.remove('hide');
+    $("div.form").style.display = 'none';
+    $('.queue-room').classList.remove('hide');
     if(socket.id === roomClient.player[0].id){
-        document.querySelector('.room-status').classList.remove('hide');
+        $('.room-status').classList.remove('hide');
     }else{
-        document.querySelector('.room-status').innerHTML = "";
+        $('.room-status').innerHTML = "";
     }
-    document.querySelector('.room-footer #room-name').innerHTML = roomClient.name;
+    $('.room-footer #room-name').innerHTML = roomClient.name;
 })
 
-btnCreRoom.addEventListener('click', ()=>{
-    socket.emit('createRoom');
-    toggleFormData(0);
-    toggleLoadingBar();
-    socket.on('roomName', (room)=>{
-        document.querySelector('#next-step').style.display = 'unset';
-        document.querySelector('h1.id-room').innerHTML = `${room.name}`;
-        toggleLoadingBar(0);
-        socket.emit('joinRoom', room.name);
-        socket.on('resJoinRoom', (res)=>{
-            roomClient = res;
-        })
-    })
-})
+// btnCreRoom.addEventListener('click', ()=>{
+//     socket.emit('createRoom');
+//     toggleFormData(0);
+//     toggleLoadingBar();
+//     socket.on('roomName', (room)=>{
+//         $('#next-step').style.display = 'unset';
+//         $('h1.id-room').innerHTML = `${room.name}`;
+//         toggleLoadingBar(0);
+//         socket.emit('joinRoom', room.name);
+//         socket.on('resJoinRoom', (res)=>{
+//             roomClient = res;
+//         })
+//     })
+// })
 
 socket.on('statusGame', (sts)=>{
     roomClient.status = sts;
@@ -103,17 +114,17 @@ function addNode(content){
 }
 
 function showList(lists){
-    document.querySelector('#list-user-queue').innerHTML = "";
-    lists.forEach(user => (user === null) ? false : document.querySelector("#list-user-queue").appendChild(addNode(user.name)));
+    $('#list-user-queue').innerHTML = "";
+    lists.forEach(user => (user === null) ? false : $("#list-user-queue").appendChild(addNode(user.name)));
 }
 
-document.querySelector('#btn-start-game').addEventListener('click', ()=>{
+$('#btn-start-game').addEventListener('click', ()=>{
     socket.emit('startGame', roomClient.name);
 })
 
 socket.on('startGame', ()=>{
-    document.querySelector('#queue').style.display = 'none';
-    const mainLoading = document.querySelector('#main-loading');
+    $('#queue').style.display = 'none';
+    const mainLoading = $('#main-loading');
     mainLoading.classList.remove('hide');
     let time = 4;
     setTimeout(()=>{
@@ -130,10 +141,10 @@ function gameStarted(time=8){
     }
     console.log("Aswer is: " + roomClient.questions[round].qa);
     choose = -1;
-    const html_question = document.querySelector('.title-question');
-    const html_answer = document.querySelector('#list-answer');
+    const html_question = $('.title-question');
+    const html_answer = $('#list-answer');
     const questions = roomClient.questions[round];
-    const boxAns = document.querySelectorAll('#ans');
+    const boxAns = $$('#ans');
     timeStart = new Date().getTime();
     html_question.innerHTML = `Câu ${round+1}: ${questions.q}`
     for (let i = 0; i < questions.a.length; i++) {
@@ -170,7 +181,7 @@ function endGame(){
     gameView.classList.add('hide');
     boardScore.classList.remove('hide');
     const rank_player = roomClient.player.sort((a, b)=> b.score - a.score);
-    let view = document.querySelector('.viewRank');
+    let view = $('.viewRank');
     view.innerHTML = "";
     for (let i = 0; i < rank_player.length; i++) {
         const tr = createEle('tr');
@@ -196,4 +207,17 @@ $$(`[room-name]`).forEach(element => {
     
         console.log('Copied the text: ' + room)
     })
-});
+})
+
+$('#setting').addEventListener('click', function(){
+    $('#box-setting').classList.remove('hide')
+    $('#box-setting').style.overflow = 'auto'
+    let h = 1;
+    let id = setInterval(()=>{
+        if(h >= 317){
+            clearInterval(id)
+        }
+        h+=5;
+        $('#box-setting').style.height = h + 'px'
+    }, 5)
+})

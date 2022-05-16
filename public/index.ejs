@@ -31,9 +31,9 @@
                         <button type="button" id="btn-create-room" >Tạo phòng</button>
                     </div>
                 </form>-->
-                <form class="" id="next-step" step="2">
+                <form class="" id="next-step" box-setting-room-player step="2">
                     <h1 class="id-room text-center" room-name="true"></h1>
-                    <input type="text" placeholder="Nhập tên" id="username" autofocus>
+                    <input type="text" placeholder="Nhập tên" name="username" id="username" autofocus>
                     <div class="main hide" id="box-setting"> 
                         <select name="topic" id="inp-topic">
                             <option disabled selected>Chủ đề random</option>
@@ -49,7 +49,7 @@
                         <label>Số lượng câu hỏi</label>
                         <div class="group-input">
                             <input type="number" value="5" min="1" name="limit-questions" id="inp-limit-questions">
-                            <span>/100</span>
+                            <span>/50</span>
                         </div>
                         <label>Thời gian(s)</label>
                         <div class="group-input">
@@ -60,7 +60,7 @@
                         <input type="checkbox" id="show-rank" name="rank">
                     </div>
                     <div class="grid">
-                        <button class="btn-a" id="setting">Cài đặt</button>
+                        <button type="button" class="btn-a" id="setting">Cài đặt</button>
                         <button type="submit" class="btn-a" id="btn-next-step">Bắt đầu &rarr;</button>
                     </div>
                 </form>

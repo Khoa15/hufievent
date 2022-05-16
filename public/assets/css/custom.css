@@ -417,6 +417,11 @@ button:focus {
   padding:unset;
 }
 
+.btn-a:focus {
+  padding-top: unset;
+  box-shadow: usnet;
+}
+
 .grid{
   display: flex;
   flex-direction: row;
