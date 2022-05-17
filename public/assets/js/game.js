@@ -26,11 +26,10 @@ class Room{
     findPlayer(room, playerId){
         return (room === undefined) ? false : room.player.findIndex(player => (player === undefined) ? false : player.id === playerId)
     }
-    createQuestion(roomId, questions){
-        const data = this.room
-        const index = this.findRoom(roomId)
-        if(index == -1) return false
-        data[index].questions = questions
+    createQuestion(_index, questions){
+        const data = this.room[_index]
+        if(data === undefined) return false
+        data.questions = questions
         return true
     }
     getOutRoom(playerId){
@@ -50,9 +49,9 @@ class Room{
     getInfo(roomId){
         return this.room.find(room => (room !== undefined) ? room.name===roomId : false)
     }
-    openRoom(_index){
+    setStatus(_index, status=1){
         const data = this.room
-        data[_index].status = 1
+        data[_index].status = status
         return true
     }
     setName(playerId, username, _index){

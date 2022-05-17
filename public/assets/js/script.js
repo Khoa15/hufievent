@@ -12,7 +12,11 @@ const button = $$('button');
 const gameView = $('.game');
 const boardScore = $('[view="rank"]');
 let roomClient = {};
-
+const Client = [{
+    masterRoom: 0 | 1,
+    roomClient: {},
+    setting: {}
+}]
 const toggleFormData = (status=1) => {
     let sts = (status) ? 'unset' : 'none';
     $('form#form-data').style.display = sts;
@@ -22,48 +26,47 @@ const toggleLoadingBar = (status=1) => {
     let sts = (status) ? 'unset' : 'none';
     $('div.loading-bar').style.display = sts;
 }
-// $('form#form-data[step="1"]').addEventListener('submit', (e)=>{
-//     e.preventDefault();
-//     toggleFormData(0);
-//     toggleLoadingBar();
-//     socket.emit('joinRoom', idRoom.value);
-//     socket.on('resJoinRoom', (res)=>{
-//         if(res === false){
-//             toggleFormData();
-//             toggleLoadingBar(0);
-//             return false;
-//         }
-//         $('[step="2"]').style.display = 'unset';
-//         $('h1.id-room').innerHTML = 'Thành công';
-//         toggleLoadingBar(0);
-//         roomClient = res;
-//     })
-// })
+$('form#form-data[step="1"]').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    toggleFormData(0);
+    toggleLoadingBar();
+    socket.emit('joinRoom', idRoom.value);
+    socket.on('resJoinRoom', (res)=>{
+        if(res === false){
+            toggleFormData();
+            toggleLoadingBar(0);
+            return false;
+        }
+        $('[step="2"]').style.display = 'unset';
+        $('h1.id-room').innerHTML = 'Thành công';
+        toggleLoadingBar(0);
+        roomClient = res;
+    })
+})
 
-// $('form[step="2"]').addEventListener('submit', (e)=>{
-//     e.preventDefault();
-//     btnOpenGame.click();// open or join room
-// })
-
+$('form[step="2"]').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    btnOpenGame.click();// open or join room
+})
+let ele = {}
 btnOpenGame.addEventListener('click', (e)=>{
     e.preventDefault()
-    let formData = []
     let username = $('#username');
     let field = $$(`#box-setting input`);
     if(username.value==false){
         username.style.border = '0.5px solid red';
         return false;
     }
-    let ele = {}
+    ele['username'] = username.value;
     for(let setting of field){
-        ele.push(setting.name)
-        ele[setting.name] = setting.value
+        if(setting.type == 'checkbox'){
+            ele[setting.name] = setting.checked;
+            continue;
+        }
+        ele[setting.name] = setting.value;
     }
-    formData.push(ele)
-    console.log(formData[0])
-    return false
     username.style.border = '0.5px solid black';
-    socket.emit('openGame', roomClient._i);
+    socket.emit('openGame', {_i: roomClient._i, formData: ele});
     socket.emit('setName', ({username: username.value, _index: roomClient._i}));
     $("div.form").style.display = 'none';
     $('.queue-room').classList.remove('hide');
@@ -75,20 +78,21 @@ btnOpenGame.addEventListener('click', (e)=>{
     $('.room-footer #room-name').innerHTML = roomClient.name;
 })
 
-// btnCreRoom.addEventListener('click', ()=>{
-//     socket.emit('createRoom');
-//     toggleFormData(0);
-//     toggleLoadingBar();
-//     socket.on('roomName', (room)=>{
-//         $('#next-step').style.display = 'unset';
-//         $('h1.id-room').innerHTML = `${room.name}`;
-//         toggleLoadingBar(0);
-//         socket.emit('joinRoom', room.name);
-//         socket.on('resJoinRoom', (res)=>{
-//             roomClient = res;
-//         })
-//     })
-// })
+btnCreRoom.addEventListener('click', ()=>{
+    socket.emit('createRoom');
+    toggleFormData(0);
+    toggleLoadingBar();
+    socket.on('roomName', (room)=>{
+        $('#next-step').style.display = 'unset';
+        $('h1.id-room').innerHTML = `${room.name}`;
+        toggleLoadingBar(0);
+        socket.emit('joinRoom', room.name);
+        socket.on('resJoinRoom', (res)=>{
+            roomClient = res;
+            Client.masterRoom = true
+        })
+    })
+})
 
 socket.on('statusGame', (sts)=>{
     roomClient.status = sts;
