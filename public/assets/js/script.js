@@ -6,6 +6,7 @@ const socket = io();
 const btnJoin = $('#btn-join');
 const btnCreRoom = $('#btn-create-room');
 const btnOpenGame = $('#btn-next-step');
+const btnStartGame = $("#btn-start-game");
 const idRoom = $('#id-room');
 const username = $('#username');
 const button = $$('button');
@@ -13,7 +14,6 @@ const gameView = $('.game');
 const boardScore = $('[view="rank"]');
 let roomClient = {};
 const Client = [{
-    masterRoom: 0 | 1,
     roomClient: {},
     setting: {}
 }]
@@ -89,7 +89,7 @@ btnCreRoom.addEventListener('click', ()=>{
         socket.emit('joinRoom', room.name);
         socket.on('resJoinRoom', (res)=>{
             roomClient = res;
-            Client.masterRoom = true
+            Client.masterRoom = true;
         })
     })
 })
@@ -122,7 +122,7 @@ function showList(lists){
     lists.forEach(user => (user === null) ? false : $("#list-user-queue").appendChild(addNode(user.name)));
 }
 
-$('#btn-start-game').addEventListener('click', ()=>{
+btnStartGame.addEventListener('click', ()=>{
     socket.emit('startGame', roomClient.name);
 })
 
@@ -224,4 +224,25 @@ $('#setting').addEventListener('click', function(){
         h+=5;
         $('#box-setting').style.height = h + 'px'
     }, 5)
+})
+
+// Sound effect
+const path_sound = './assets/sounds/'
+const sounds = {queue: `${path_sound}room_queue_2.mp3`, startGame: `${path_sound}room_queue_3_or_fighting.mp3`}
+const context = new AudioContext()
+let room_queue = new Howl({
+    src: [sounds['queue']],
+    loop: true
+})
+let room_started_game = new Howl({
+    src: [sounds['startGame']],
+    loop: true
+})
+$('button#btn-next-step').addEventListener('click', function(){
+    room_queue.play()
+})
+
+btnStartGame.addEventListener('click', ()=>{
+    room_queue.stop()
+    room_started_game.play()
 })

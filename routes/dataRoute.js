@@ -6,7 +6,7 @@ Router.get('/', async function getData(req, res){
     try {
         const { limit, topic } = req.query
         let count = await forms.count()
-        count = Math.floor((Math.random() * count) - limit)
+        count = Math.floor((Math.random() * count) + limit)
         let filter = (topic) ? {topic} : {}
         // filter = {...filter, published: true}
         const data = await forms.find(filter).skip(count).limit(limit)

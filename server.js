@@ -29,7 +29,6 @@ io.on('connection', (socket)=>{
     console.log(`A user connected`)
 
     socket.on('joinRoom', (idRoom)=>{
-        console.log(1)
         if(game.joinRoom(idRoom, socket.id)){
             socket.join(idRoom)
             io.to(idRoom).emit('resJoinRoom', game.getInfo(idRoom))
@@ -43,7 +42,7 @@ io.on('connection', (socket)=>{
         if(formData){
             fetch(`${process.env.SERVER}/api/data/?limit=${formData['limit-questions']}`,{method: 'get'}).then(response => response.json()).then(data =>{
                 game.createQuestion(_i, data.data)
-                io.to(game.room[_i].name).emit('roomName', game.getInfo(game.room[_i].name))
+                io.to(game.room[_i].name).emit('updaupdateStatete', game.getInfo(game.room[_i].name))
             })
         }
     })

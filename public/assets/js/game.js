@@ -35,7 +35,7 @@ class Room{
     getOutRoom(playerId){
         const data = this.room
         if(data === undefined) return true
-        const index = data.findIndex(room => (room !== undefined) ? room.player.find(player=> (player !== undefined) ? player.id===playerId : false) : false)
+        const index = data.findIndex(room => (room !== undefined) ? room.player.find(player=> (player.id !== undefined) ? player.id===playerId : false) : false)
         if(index === -1) return false
         const iPlayer = this.findPlayer(data[index], playerId)
         data[index].total--
