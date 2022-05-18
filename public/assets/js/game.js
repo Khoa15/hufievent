@@ -5,7 +5,7 @@ class Room{
     }
     createRoom(_id, playerId){
         if(this.room.find(room => (room !== undefined) ? room.name === _id : false) !== undefined) return false
-        this.room[this.length] = {name: _id, player: [], total: 0}
+        this.room[this.length] = {name: _id, player: [], total: 0, setting: {players: 10, questions: 5, time: 10}}
         //this.room[this.length].player[this.room[this.length].total] = {id: playerId}
         this.room[this.length].status = 0
         this.room[this.length]._i = this.length
@@ -15,7 +15,7 @@ class Room{
     joinRoom(id, playerId, permit=1){
         const data = this.room
         const index = data.findIndex(room => (room !== undefined) ? room.name === id : false)
-        if(index == -1) return false
+        if(index == -1 || data[index].setting.players === data[index].total) return msg("Phòng không tồn tại hoặc đã không còn chỗ trống")
         data[index].player = [...data[index].player, {id: playerId, score: 0, a:[], permit: permit}]
         data[index].total++
         return true
@@ -31,6 +31,16 @@ class Room{
         if(data === undefined) return false
         data.questions = questions
         return true
+    }
+    setRoom(_index, setting){
+        const data = this.room[_index]
+        if(data === undefined) return false
+        data.setting = {
+            questions: Number(setting['limit-questions']),
+            players: Number(setting['limit-players']),
+            time: Number(setting['limit-time'])
+        }
+        return true;
     }
     getOutRoom(playerId){
         const data = this.room
@@ -50,8 +60,9 @@ class Room{
         return this.room.find(room => (room !== undefined) ? room.name===roomId : false)
     }
     setStatus(_index, status=1){
-        const data = this.room
-        data[_index].status = status
+        const data = this.room[_index]
+        if(data === undefined) return false;
+        data.status = status
         return true
     }
     setName(playerId, username, _index){
@@ -67,6 +78,9 @@ class Room{
     }
     list(){
         return this.room
+    }
+    message(msg, sts=0){
+        return {sts: sts, msg: msg};
     }
 }
 

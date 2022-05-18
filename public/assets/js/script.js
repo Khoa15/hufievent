@@ -52,7 +52,7 @@ let ele = {}
 btnOpenGame.addEventListener('click', (e)=>{
     e.preventDefault()
     let username = $('#username');
-    let field = $$(`#box-setting input`);
+    let field = $$(`#box-setting input, select`);
     if(username.value==false){
         username.style.border = '0.5px solid red';
         return false;
@@ -76,6 +76,7 @@ btnOpenGame.addEventListener('click', (e)=>{
         $('.room-status').innerHTML = "";
     }
     $('.room-footer #room-name').innerHTML = roomClient.name;
+    $('#limit-user').innerHTML = roomClient.setting.players
 })
 
 btnCreRoom.addEventListener('click', ()=>{
@@ -182,6 +183,7 @@ function createText(text){
 }
 
 function endGame(){
+    sound_end_game()
     gameView.classList.add('hide');
     boardScore.classList.remove('hide');
     const rank_player = roomClient.player.sort((a, b)=> b.score - a.score);
@@ -228,7 +230,11 @@ $('#setting').addEventListener('click', function(){
 
 // Sound effect
 const path_sound = './assets/sounds/'
-const sounds = {queue: `${path_sound}room_queue_2.mp3`, startGame: `${path_sound}room_queue_3_or_fighting.mp3`}
+const sounds = {
+    queue: `${path_sound}room_queue_2.mp3`,
+    startGame: `${path_sound}room_queue_3_or_fighting.mp3`,
+    endGame: `${path_sound}room_queue_2.mp3`
+}
 const context = new AudioContext()
 let room_queue = new Howl({
     src: [sounds['queue']],
@@ -236,6 +242,10 @@ let room_queue = new Howl({
 })
 let room_started_game = new Howl({
     src: [sounds['startGame']],
+    loop: true
+})
+let room_end_game = new Howl({
+    src: [sounds['endGame']],
     loop: true
 })
 $('button#btn-next-step').addEventListener('click', function(){
@@ -246,3 +256,8 @@ btnStartGame.addEventListener('click', ()=>{
     room_queue.stop()
     room_started_game.play()
 })
+function sound_end_game(){
+    room_started_game.stop()
+    room_end_game.play()
+}
+// ./End sound effefct

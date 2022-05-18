@@ -41,8 +41,9 @@ io.on('connection', (socket)=>{
         game.setStatus(_i, 1)
         if(formData){
             fetch(`${process.env.SERVER}/api/data/?limit=${formData['limit-questions']}`,{method: 'get'}).then(response => response.json()).then(data =>{
+                game.setRoom(_i, formData)
                 game.createQuestion(_i, data.data)
-                io.to(game.room[_i].name).emit('updaupdateStatete', game.getInfo(game.room[_i].name))
+                io.to(game.room[_i].name).emit('updateState', game.room[_i])
             })
         }
     })
