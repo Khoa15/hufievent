@@ -2,27 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="google-site-verification" content="apb2mhhM5XiEL2hr2gBpQEQe0XsHW6OlHmIlLLKIJOU" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <meta name="Description" CONTENT="Hufi event, tạo quiz game thời gian thực do sinh viên hufi thực hiện">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <title>PPC</title>
     <link rel="stylesheet" href="./assets/css/custom.css">
 </head>
 <body>
     <div class="box">
-        <div class="process-bar hide" id="main-loading">
-            <div class="process size-l"></div>
+        <div class="notification hide">
+            <div class="notify">
+                Không thể đăng nhập vào phòng này
+            </div>
         </div>
-        <div class="main container" id="queue">
-            <div class="form" step="1">
+        <div class="main container">
+            <div class="form">
                 <div class="loading-bar hide">
                     <div class="loading"></div>
                 </div>
-                <div id="message-success"></div>
-                <form id="form-data" step="1">
+                <form class="" id="form-data" step="1">
                     <input type="text" id="id-room" placeholder="Nhập mã phòng" autofocus autocomplete="off" required>
                     <div class="space-btn">
                         <button type="submit" class="bg-success" id="btn-join">Tham Gia</button>
@@ -34,13 +31,12 @@
                 <form class="hide" id="next-step" box-setting-room-player step="2">
                     <h1 class="id-room text-center" room-name="true"></h1>
                     <input type="text" placeholder="Nhập tên" name="username" id="username" autofocus value="Ako">
-                    <div class="main hide" id="box-setting"> 
+                    <div class="main" id="box-setting"> 
                         <select name="topic" id="inp-topic">
-                            <option disabled selected>Chủ đề random</option>
-                            <option>Sinh hoạt công dân đầu khóa</option>
-                            <option>Sinh hoạt công dân giữa khóa</option>
+                            <option value="-1" disabled selected>Chủ đề random</option>
+                            <option value="1">Sinh hoạt công dân đầu khóa</option>
+                            <option value="2">Sinh hoạt công dân giữa khóa</option>
                         </select>
-    
                         <label>Số lượng người chơi</label>
                         <div class="group-input">
                             <input type="number" value="10" min="1" name="limit-players" id="inp-limit-players">
@@ -56,8 +52,8 @@
                             <input type="number" value="10" min="5" name="limit-time" id="inp-limit-time">
                             <span>/60</span>
                         </div>
-                        <label for="show-rank" class="text-center">Hiện xếp hạng sau mỗi câu hỏi</label>
-                        <input type="checkbox" id="show-rank" name="rank">
+                        <label for="show-rank" class="text-center">Hiện đáp án</label>
+                        <input type="checkbox" id="show-ans" name="ans">
                     </div>
                     <div class="grid">
                         <button type="button" class="btn-a" id="setting">Cài đặt</button>
@@ -65,7 +61,7 @@
                     </div>
                 </form>
             </div>
-            <div class="queue-room hide" step="2">
+            <div class="queue-room hide">
                <div class="room-brand" id="list-user-queue">
                    
                </div>
@@ -80,40 +76,49 @@
                </div>
             </div>
         </div>
+        <div class="process-bar hide" id="main-loading">
+            <div class="process size-l"></div>
+        </div>
         <div class="game hide">
-                <div class="header">
-                    <div class="process-bar">
-                        <div class="process"></div>
-                    </div>
-                    <div class="header-main bg-success">
-                        <div class="title-question">
-                            Loading...
-                        </div>
+            <div class="header">
+                <div class="process-bar">
+                    <div class="process"></div>
+                </div>
+                <div class="header-main bg-success">
+                    <div class="title-question">
+                        Loading...
                     </div>
                 </div>
-        
-                <div class="main container" id="list-answers">
-                    <div class="box-answer">
-                        <div class="box-main" index="0" onclick="checkAns(this)">
-                            <p class="title-answer" id="ans"></p>
-                        </div>
-                    </div>
-                    <div class="box-answer">
-                        <div class="box-main" index="1" onclick="checkAns(this)">
-                            <p class="title-answer" id="ans"></p>
-                        </div>
-                    </div>
-                    <div class="box-answer">
-                        <div class="box-main" index="2" onclick="checkAns(this)">
-                            <p class="title-answer" id="ans"></p>
-                        </div>
-                    </div>
-                    <div class="box-answer">
-                        <div class="box-main" index="3" onclick="checkAns(this)">
-                            <p class="title-answer" id="ans"></p>
-                        </div>
+            </div>
+            <div class="main container hide">
+                <div class="col-rank hide">
+                    <label>10</label>
+                    <div class="col"></div>
+                    <label>4</label>
+                </div>
+            </div>
+            <div class="main container-fluid" id="list-answers">
+                <div class="box-answer">
+                    <div class="box-main" index="0" onclick="checkAns(this)">
+                        <p class="title-answer" id="ans"></p>
                     </div>
                 </div>
+                <div class="box-answer">
+                    <div class="box-main" index="1" onclick="checkAns(this)">
+                        <p class="title-answer" id="ans"></p>
+                    </div>
+                </div>
+                <div class="box-answer">
+                    <div class="box-main" index="2" onclick="checkAns(this)">
+                        <p class="title-answer" id="ans"></p>
+                    </div>
+                </div>
+                <div class="box-answer">
+                    <div class="box-main" index="3" onclick="checkAns(this)">
+                        <p class="title-answer" id="ans"></p>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="main container hide" view="rank">
             <table class="boardScore">
@@ -130,6 +135,7 @@
             </table>
         </div>
     </div>
+    
     <script src="https://cdn.jsdelivr.net/npm/howler@2.2.3/dist/howler.min.js"></script>
     <script src="./assets/js/game.js"></script>
     <script src="/socket.io/socket.io.js"></script>

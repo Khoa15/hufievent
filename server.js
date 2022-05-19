@@ -28,19 +28,21 @@ app.use('/api/data', dataRoute)
 io.on('connection', (socket)=>{
     console.log(`A user connected`)
 
-    socket.on('joinRoom', (idRoom)=>{
-        if(game.joinRoom(idRoom, socket.id)){
-            socket.join(idRoom)
-            io.to(idRoom).emit('resJoinRoom', game.getInfo(idRoom))
+    socket.on('joinRoom', (name)=>{
+        const result = game.joinRoom(name, socket.id)
+        if(result.sts){
+            socket.join(name)
+            io.to(name).emit('resJoinRoom', game.room[game.findRoom(name)])
         }else{
-            socket.emit('resJoinRoom', false)
+            socket.emit('resJoinRoom', result)
         }
     })
 
     socket.on('openGame', ({_i, formData})=>{
+        if(game.room[_i] === undefined) return false;
         game.setStatus(_i, 1)
         if(formData){
-            fetch(`${process.env.SERVER}/api/data/?limit=${formData['limit-questions']}`,{method: 'get'}).then(response => response.json()).then(data =>{
+            fetch(`${process.env.SERVER}/api/data/?limit=${formData['limit-questions']}&topic=${formData['topic']}`,{method: 'get'}).then(response => response.json()).then(data =>{
                 game.setRoom(_i, formData)
                 game.createQuestion(_i, data.data)
                 io.to(game.room[_i].name).emit('updateState', game.room[_i])
@@ -67,14 +69,13 @@ io.on('connection', (socket)=>{
         const createRoom = () => {
             let name = makeRoom()
             if(game.createRoom(name, socket.id)){
-                socket.join(name)                
+                socket.join(name)
                 io.to(name).emit('roomName', game.getInfo(name))
                 return name
             }
             createRoom()
         }
         createRoom()
-        //socket.join(room)
     })
 
     socket.on('disconnect', ()=>{
@@ -89,7 +90,7 @@ server.listen(port, ()=>{
 })
 
 function makeRoom(){
-    const length = Math.floor((Math.random() + 3) * 2)
+    const length = Math.floor((Math.random() + 3) + 2)
     const char = 'abcdefghijklmnopqrstuvwxyz'
     const upChar = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     const specialChar = ''

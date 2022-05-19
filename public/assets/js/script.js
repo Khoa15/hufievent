@@ -31,17 +31,6 @@ $('form#form-data[step="1"]').addEventListener('submit', (e)=>{
     toggleFormData(0);
     toggleLoadingBar();
     socket.emit('joinRoom', idRoom.value);
-    socket.on('resJoinRoom', (res)=>{
-        if(res === false){
-            toggleFormData();
-            toggleLoadingBar(0);
-            return false;
-        }
-        $('[step="2"]').style.display = 'unset';
-        $('h1.id-room').innerHTML = 'Thành công';
-        toggleLoadingBar(0);
-        roomClient = res;
-    })
 })
 
 $('form[step="2"]').addEventListener('submit', (e)=>{
@@ -52,20 +41,22 @@ let ele = {}
 btnOpenGame.addEventListener('click', (e)=>{
     e.preventDefault()
     let username = $('#username');
-    let field = $$(`#box-setting input, select`);
-    if(username.value==false){
-        username.style.border = '0.5px solid red';
-        return false;
-    }
-    ele['username'] = username.value;
-    for(let setting of field){
-        if(setting.type == 'checkbox'){
-            ele[setting.name] = setting.checked;
-            continue;
+    if(Client.masterRoom === true){
+        let field = $$(`#box-setting input, select`);
+        if(username.value==false){
+            username.style.border = '0.5px solid red';
+            return false;
         }
-        ele[setting.name] = setting.value;
+        ele['username'] = username.value;
+        for(let setting of field){
+            if(setting.type == 'checkbox'){
+                ele[setting.name] = setting.checked;
+                continue;
+            }
+            ele[setting.name] = setting.value;
+        }
+        username.style.border = '0.5px solid black';
     }
-    username.style.border = '0.5px solid black';
     socket.emit('openGame', {_i: roomClient._i, formData: ele});
     socket.emit('setName', ({username: username.value, _index: roomClient._i}));
     $("div.form").style.display = 'none';
@@ -76,37 +67,13 @@ btnOpenGame.addEventListener('click', (e)=>{
         $('.room-status').innerHTML = "";
     }
     $('.room-footer #room-name').innerHTML = roomClient.name;
-    $('#limit-user').innerHTML = roomClient.setting.players
+    if(Client.masterRoom === true) $('#limit-user').innerHTML = ('0'+ele['limit-players']).slice(-2);
 })
 
 btnCreRoom.addEventListener('click', ()=>{
     socket.emit('createRoom');
     toggleFormData(0);
     toggleLoadingBar();
-    socket.on('roomName', (room)=>{
-        $('#next-step').style.display = 'unset';
-        $('h1.id-room').innerHTML = `${room.name}`;
-        toggleLoadingBar(0);
-        socket.emit('joinRoom', room.name);
-        socket.on('resJoinRoom', (res)=>{
-            roomClient = res;
-            Client.masterRoom = true;
-        })
-    })
-})
-
-socket.on('statusGame', (sts)=>{
-    roomClient.status = sts;
-})
-socket.on('updateState', (room)=>{
-    if(room.player[0] === null){
-        window.location.reload()
-    }
-    roomClient = room;
-    if(roomClient.status === 1){
-        showList(roomClient.player);
-        if(socket.id === roomClient.player[0].id) $('#total-user').innerHTML = (roomClient.total < 10) ? `0${roomClient.total}` : roomClient.total
-    }
 })
 
 function addNode(content){
@@ -114,7 +81,6 @@ function addNode(content){
     node = document.createElement('p');
     name = document.createTextNode(content);
     node.appendChild(name);
-    
     return node;
 }
 
@@ -127,24 +93,13 @@ btnStartGame.addEventListener('click', ()=>{
     socket.emit('startGame', roomClient.name);
 })
 
-socket.on('startGame', ()=>{
-    $('#queue').style.display = 'none';
-    const mainLoading = $('#main-loading');
-    mainLoading.classList.remove('hide');
-    let time = 4;
-    setTimeout(()=>{
-        mainLoading.classList.add('hide');
-        gameView.classList.remove('hide');
-        gameStarted();
-    }, time*1000);
-})
-let timeStart = 0, choose = -1, round = 0;
+let timeStart = 0, choose = -1, round = 0, score = 0;
 function gameStarted(time=8){
     if(round === roomClient.questions.length){
         endGame();
         return true;
     }
-    console.log("Aswer is: " + roomClient.questions[round].qa);
+    console.log("Answer is: " + roomClient.questions[round].qa);
     choose = -1;
     const html_question = $('.title-question');
     const html_answer = $('#list-answer');
@@ -153,24 +108,30 @@ function gameStarted(time=8){
     timeStart = new Date().getTime();
     html_question.innerHTML = `Câu ${round+1}: ${questions.q}`
     for (let i = 0; i < questions.a.length; i++) {
-        boxAns[i].innerHTML = questions.a[i];
+        boxAns[i].innerHTML = `${String.fromCharCode(i+65)}: ${questions.a[i]}`;
     }
     setTimeout(()=>{
+        saveAns(choose, score)
         round++;
         gameStarted();
     }, time*1000);
 }
 const checkAns = (e)=>{
-    if(choose !== -1) return false;
-    const score = Math.floor((10000/((new Date().getTime() - timeStart)+1)) * 1000) / 1000;
+    //if(choose !== -1) return false;
+    score = Math.floor((10000/((new Date().getTime() - timeStart)+1)) * 1000) / 1000;
     choose = e.getAttribute('index');
-    saveAns(choose, score);
+    for(let ele of $$(".box-main")){
+        console.log(ele)
+        ele.classList.remove('active')
+    }
+    e.classList.add('active')
 }
 function saveAns(checkAns, score){
     if(checkAns != roomClient.questions[round].qa) return false;
     const player = roomClient.player.find(player => player.id === socket.id);
     player.score += score;
-    player.a = [...player.a, {a:checkAns, q: round}];
+    player.a[round] = {a:checkAns, q: round, qid: roomClient.questions[round]._id}
+    console.log(player)
     socket.emit('savePlayer', ({_index:roomClient._i, players: roomClient.player}));
 }
 
@@ -197,7 +158,7 @@ function endGame(){
         rank.appendChild(createText(i+1));
         name.classList.add('text-left');
         name.appendChild(createText(rank_player[i].name));
-        score.appendChild(createText(rank_player[i].score));
+        score.appendChild(createText(Math.floor(rank_player[i].score * 100)/100));
         tr.appendChild(rank);
         tr.appendChild(name);
         tr.appendChild(score);
@@ -208,10 +169,8 @@ function endGame(){
 $$(`[room-name]`).forEach(element => {
     element.addEventListener('click', ()=>{
         const room = element.innerHTML
-    
         navigator.clipboard.writeText(room)
-    
-        console.log('Copied the text: ' + room)
+        tgNotify({sts:1, msg:`Copied the text: <b>${room}</b>`})
     })
 })
 
@@ -261,3 +220,74 @@ function sound_end_game(){
     room_end_game.play()
 }
 // ./End sound effefct
+
+// Socket
+socket.on('startGame', ()=>{
+    $('.main.container').classList.add('hide')
+    const mainLoading = $('#main-loading');
+    mainLoading.classList.remove('hide');
+    let time = 4;
+    setTimeout(()=>{
+        mainLoading.classList.add('hide');
+        gameView.classList.remove('hide');
+        gameStarted();
+    }, time*1000);
+})
+socket.on('resJoinRoom', (res)=>{
+    if(res.sts === 0){
+        tgNotify(res)
+        toggleFormData();
+        toggleLoadingBar(0);
+        return false;
+    }
+    $('[step="2"]').style.display = 'unset';
+    $('h1.id-room').innerHTML = 'Thành công';
+    toggleLoadingBar(0);
+    roomClient = res;
+})
+socket.on('roomName', (room)=>{
+    $('#next-step').style.display = 'unset';
+    $('h1.id-room').innerHTML = `${room.name}`;
+    toggleLoadingBar(0);
+    socket.emit('joinRoom', room.name);
+    socket.on('resJoinRoom', (res)=>{
+        roomClient = res;
+        Client.masterRoom = true;
+    })
+})
+socket.on('statusGame', (sts)=>{
+    roomClient.status = sts;
+})
+socket.on('updateState', (room)=>{
+    if(room.player[0] === null){
+        window.location.reload()
+    }
+    roomClient = room;
+    if(roomClient.status === 1){
+        showList(roomClient.player);
+        if(socket.id === roomClient.player[0].id) $('#total-user').innerHTML = (`0${roomClient.total}`).slice(-2)
+    }
+})
+// ./End Socket
+
+//show notification
+function tgNotify(result){
+    console.log(result)
+    $('.notify').innerHTML = result.msg
+    const noti = $('.notification').classList
+    if(result.sts === 0){
+        noti.add('bg-danger')
+        noti.remove('bg-success')
+    }else{
+        noti.add('bg-success')
+        noti.remove('bg-danger')
+    }
+    if(noti.contains('hide')){
+        noti.remove('hide');
+    }
+    setTimeout(()=>{
+        noti.add('hide')
+    }, 2500)
+    return;
+}
+//endshow notification
