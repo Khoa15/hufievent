@@ -25,6 +25,7 @@ const dataRoute = require('./routes/dataRoute')
 
 app.use('/', homeRoute)
 app.use('/api/data', dataRoute)
+
 io.on('connection', (socket)=>{
     console.log(`A user connected`)
 

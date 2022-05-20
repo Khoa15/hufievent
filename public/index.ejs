@@ -31,7 +31,7 @@
                 <form class="hide" id="next-step" box-setting-room-player step="2">
                     <h1 class="id-room text-center" room-name="true"></h1>
                     <input type="text" placeholder="Nhập tên" name="username" id="username" autofocus value="Ako">
-                    <div class="main" id="box-setting"> 
+                    <div class="main hide" id="box-setting"> 
                         <select name="topic" id="inp-topic">
                             <option value="-1" disabled selected>Chủ đề random</option>
                             <option value="1">Sinh hoạt công dân đầu khóa</option>
@@ -52,11 +52,11 @@
                             <input type="number" value="10" min="5" name="limit-time" id="inp-limit-time">
                             <span>/60</span>
                         </div>
-                        <label for="show-rank" class="text-center">Hiện đáp án</label>
-                        <input type="checkbox" id="show-ans" name="ans">
+                        <label for="stop" class="text-center">Dừng mỗi màn</label>
+                        <input type="checkbox" id="stop" name="stop" checked>
                     </div>
                     <div class="grid">
-                        <button type="button" class="btn-a" id="setting">Cài đặt</button>
+                        <!-- <button type="button" class="btn-a" id="setting">Cài đặt</button> -->
                         <button type="submit" class="btn-a" id="btn-next-step">Bắt đầu &rarr;</button>
                     </div>
                 </form>
@@ -68,36 +68,49 @@
                <div class="room-status hide">
                    <p><span id="total-user">00</span>/<span id="limit-user">00</span></p>
                    <button class="btn-sm" id="btn-start-game" style="margin-left: 5px" id="startGame">Bắt đầu</button>
+                    <svg width="38px" height="38px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="48" height="48" fill="white" fill-opacity="0.01"/>
+                        <path d="M41.5 10H35.5" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M27.5 6V14" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M27.5 10L5.5 10" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M13.5 24H5.5" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M21.5 20V28" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M43.5 24H21.5" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M41.5 38H35.5" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M27.5 34V42" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M27.5 38H5.5" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+    
                </div>
                <div class="room-footer">
                    <div id="room-name" room-name="true">
-
                    </div>
                </div>
             </div>
         </div>
         <div class="process-bar hide" id="main-loading">
-            <div class="process size-l"></div>
+            <div class="process run-process size-l"></div>
         </div>
         <div class="game hide">
             <div class="header">
                 <div class="process-bar">
-                    <div class="process"></div>
+                    <div class="process" id="timeline"></div>
                 </div>
                 <div class="header-main bg-success">
                     <div class="title-question">
                         Loading...
                     </div>
                 </div>
+                <button class="btn-a hide" style="position: absolute;right:0;text-align: right;" id="next-round">Next</button>
             </div>
             <div class="main container hide">
-                <div class="col-rank hide">
+                <div class="col-rank" index="0">
                     <label>10</label>
                     <div class="col"></div>
                     <label>4</label>
                 </div>
             </div>
-            <div class="main container-fluid" id="list-answers">
+            <div class="main container-fluid" show="0" id="list-answers">
                 <div class="box-answer">
                     <div class="box-main" index="0" onclick="checkAns(this)">
                         <p class="title-answer" id="ans"></p>

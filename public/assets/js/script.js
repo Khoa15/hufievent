@@ -74,6 +74,16 @@ btnCreRoom.addEventListener('click', ()=>{
     socket.emit('createRoom');
     toggleFormData(0);
     toggleLoadingBar();
+    $('#box-setting').classList.remove('hide')
+    $('#box-setting').style.overflow = 'auto'
+    let h = 1;
+    let id = setInterval(()=>{
+        if(h >= 317){
+            clearInterval(id)
+        }
+        h+=5;
+        $('#box-setting').style.height = h + 'px'
+    }, 5)
 })
 
 function addNode(content){
@@ -86,7 +96,7 @@ function addNode(content){
 
 function showList(lists){
     $('#list-user-queue').innerHTML = "";
-    lists.forEach(user => (user === null) ? false : $("#list-user-queue").appendChild(addNode(user.name)));
+    lists.forEach(user => (user === null || user.name === undefined) ? false : $("#list-user-queue").appendChild(addNode(user.name)));
 }
 
 btnStartGame.addEventListener('click', ()=>{
@@ -94,11 +104,12 @@ btnStartGame.addEventListener('click', ()=>{
 })
 
 let timeStart = 0, choose = -1, round = 0, score = 0;
-function gameStarted(time=8){
+function gameStarted(time=roomClient.setting.time){
     if(round === roomClient.questions.length){
         endGame();
         return true;
     }
+    togAnimation();
     console.log("Answer is: " + roomClient.questions[round].qa);
     choose = -1;
     const html_question = $('.title-question');
@@ -107,13 +118,16 @@ function gameStarted(time=8){
     const boxAns = $$('#ans');
     timeStart = new Date().getTime();
     html_question.innerHTML = `Câu ${round+1}: ${questions.q}`
+    $('#timeline').style.animationDuration = time+'s'
     for (let i = 0; i < questions.a.length; i++) {
         boxAns[i].innerHTML = `${String.fromCharCode(i+65)}: ${questions.a[i]}`;
     }
-    setTimeout(()=>{
+    const timeOut = setTimeout(()=>{
+        togAnimation();
+        toggAns();
         saveAns(choose, score)
-        round++;
-        gameStarted();
+        // round++;
+        // gameStarted();
     }, time*1000);
 }
 const checkAns = (e)=>{
@@ -126,6 +140,14 @@ const checkAns = (e)=>{
     }
     e.classList.add('active')
 }
+function togAnimation(){
+    const running = $('#timeline').classList
+    if(running.contains('run-process')){
+        running.remove('run-process')
+        return;
+    }
+    running.add('run-process')
+}
 function saveAns(checkAns, score){
     if(checkAns != roomClient.questions[round].qa) return false;
     const player = roomClient.player.find(player => player.id === socket.id);
@@ -134,6 +156,26 @@ function saveAns(checkAns, score){
     console.log(player)
     socket.emit('savePlayer', ({_index:roomClient._i, players: roomClient.player}));
 }
+
+function toggAns(){
+    const i_ans = roomClient.questions[round].qa
+    if($(`#list-answers.show-answer`) == null){
+        $(`.box-main[index="${i_ans}"]`).classList.add('answer', 'active');
+        $(`#list-answers`).classList.add('show-answer');
+        $('#next-round').classList.remove('hide')
+        return;
+    }
+    $(`.box-main[index="${i_ans}"]`).classList.remove('answer', 'active');
+    if(choose !== -1)$(`.box-main[index="${choose}"]`).classList.remove('active')
+    $(`#list-answers`).classList.remove('show-answer');
+    $('#next-round').classList.add('hide');
+}
+
+$("#next-round").addEventListener('click', ()=>{
+    toggAns();
+    round++;
+    gameStarted();
+})
 
 function createEle(ele){
     return document.createElement(ele);
@@ -172,19 +214,6 @@ $$(`[room-name]`).forEach(element => {
         navigator.clipboard.writeText(room)
         tgNotify({sts:1, msg:`Copied the text: <b>${room}</b>`})
     })
-})
-
-$('#setting').addEventListener('click', function(){
-    $('#box-setting').classList.remove('hide')
-    $('#box-setting').style.overflow = 'auto'
-    let h = 1;
-    let id = setInterval(()=>{
-        if(h >= 317){
-            clearInterval(id)
-        }
-        h+=5;
-        $('#box-setting').style.height = h + 'px'
-    }, 5)
 })
 
 // Sound effect
@@ -241,7 +270,7 @@ socket.on('resJoinRoom', (res)=>{
         return false;
     }
     $('[step="2"]').style.display = 'unset';
-    $('h1.id-room').innerHTML = 'Thành công';
+    $('h1.id-room').innerHTML = res.name;
     toggleLoadingBar(0);
     roomClient = res;
 })

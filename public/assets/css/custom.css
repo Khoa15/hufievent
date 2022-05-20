@@ -39,11 +39,13 @@ form{
 }
 
 .process {
-  width: 76%;
+  width: 0%;
   height: 10px;
   background: #14cdc8;
+}
+.run-process{
   animation-name: process;
-  animation-duration: 8s;
+  animation-duration: 4s;
   animation-iteration-count: infinite;
 }
 
@@ -53,29 +55,13 @@ form{
     background-color: #14cdc8;
   }
 
-  30% {
-    background-color: #f39c12;
-  }
-
-  40% {
-    background-color: #ff4c30;
-  }
-
-  50% {
-    width: 0%;
-  }
-
   60% {
-    background-color: #ff4c30;
-  }
-
-  70% {
     background-color: #f39c12;
   }
 
   100% {
-    width: 100%;
-    background-color: #14cdc8;
+    width: 0%;
+    background-color: #ff4c30;
   }
 }
 
@@ -121,6 +107,7 @@ h1 {
 
 .header {
   width: 100%;
+  position: relative
 }
 
 .container {
@@ -210,12 +197,18 @@ td {
   border-radius: 10px;
   border: 2px solid #006992;
   transition: 0.2s ease;
-  height: 300px;
+  height: 250px;
   overflow-y: auto;
   align-items: center;
   display: flex;
   justify-content: center;
 
+}
+
+@media(min-width: 1900px){
+  .box-main{
+    height: 300px;
+  }
 }
 
 @media(max-width: 1050px){
@@ -558,6 +551,16 @@ select{
   .notification{
     max-width: 200px;
   }
+}
+
+
+#list-answers.show-answer .box-answer .box-main{
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.box-main.answer{
+  opacity: 1!important;
 }
 
 .col-rank{

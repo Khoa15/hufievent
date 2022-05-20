@@ -2,7 +2,7 @@ class Room{
     constructor(){
         this.room = []
         this.length = 0
-        this.valRoom = (name) =>{ return {name: name, player: [], total: 0, setting: {topic: -1, players: 10, questions: 5, time: 10, ans: 0}}}
+        this.valRoom = (name) =>{ return {name: name, player: [], total: 0, setting: {topic: -1, players: 10, questions: 5, time: 10, stop: 0}}}
     }
     createRoom(_id, playerId){
         if(this.room.find(room => (room !== undefined) ? room.name === _id : false) !== undefined) return false
