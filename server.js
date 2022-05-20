@@ -38,7 +38,17 @@ io.on('connection', (socket)=>{
             socket.emit('resJoinRoom', result)
         }
     })
-
+    
+    socket.on('setName', ({username, _index})=>{
+        if(game.setName(socket.id, username, _index))
+        io.to(game.room[_index].name).emit('updateState', game.room[_index])
+    })
+    
+    socket.on('savePlayer', ({_index, players})=>{
+        game.room[_index].player = players
+        io.to(game.room[_index].name).emit('updateState', game.room[_index])
+    })
+    
     socket.on('openGame', ({_i, formData})=>{
         if(game.room[_i] === undefined) return false;
         game.setStatus(_i, 1)
@@ -56,14 +66,8 @@ io.on('connection', (socket)=>{
         io.to(idRoom).emit('statusGame', 2)
     })
 
-    socket.on('setName', ({username, _index})=>{
-        if(game.setName(socket.id, username, _index))
-            io.to(game.room[_index].name).emit('updateState', game.room[_index])
-    })
-
-    socket.on('savePlayer', ({_index, players})=>{
-        game.room[_index].player = players
-        io.to(game.room[_index].name).emit('updateState', game.room[_index])
+    socket.on('nextRound', (_i)=>{
+        io.to(game.room[_i].name).emit('nextRound')
     })
 
     socket.on('createRoom',  ()=>{

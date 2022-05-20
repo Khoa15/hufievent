@@ -41,7 +41,7 @@ class Room{
             questions: Number(setting['limit-questions']),
             players: Number(setting['limit-players']),
             time: Number(setting['limit-time']),
-            ans: Number(setting['ans']),
+            stop: Number(setting['stop']),
         }
         return true;
     }

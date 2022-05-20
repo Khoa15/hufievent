@@ -43,6 +43,20 @@ form{
   height: 10px;
   background: #14cdc8;
 }
+
+#volume{
+  height: 24px;
+  cursor: pointer;
+}
+
+#volume input{
+  position: absolute;
+  bottom: -22px;
+  left: 0;
+  margin: 0;
+  padding: 0;
+}
+
 .run-process{
   animation-name: process;
   animation-duration: 4s;

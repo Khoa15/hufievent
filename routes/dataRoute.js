@@ -5,6 +5,7 @@ const Router = express.Router()
 Router.get('/', async function getData(req, res){
     try {
         const { limit, topic } = req.query
+        console.log(limit, topic)
         let count = await forms.count()
         count = Math.floor((Math.random() * count) + Number(limit))
         let filter = (topic && topic !== "-1") ? {topic: Number(topic)} : {}

@@ -110,8 +110,8 @@ function gameStarted(time=roomClient.setting.time){
         return true;
     }
     togAnimation();
-    console.log("Answer is: " + roomClient.questions[round].qa);
     choose = -1;
+    console.log("Answer is: " + roomClient.questions[round].qa);
     const html_question = $('.title-question');
     const html_answer = $('#list-answer');
     const questions = roomClient.questions[round];
@@ -121,17 +121,18 @@ function gameStarted(time=roomClient.setting.time){
     $('#timeline').style.animationDuration = time+'s'
     for (let i = 0; i < questions.a.length; i++) {
         boxAns[i].innerHTML = `${String.fromCharCode(i+65)}: ${questions.a[i]}`;
+        $$('.box-main')[i].classList.remove('active')
     }
     const timeOut = setTimeout(()=>{
         togAnimation();
-        toggAns();
         saveAns(choose, score)
-        // round++;
-        // gameStarted();
+        if(roomClient.setting.stop === 0){
+            round++;
+            gameStarted();
+        }else toggAns();
     }, time*1000);
 }
 const checkAns = (e)=>{
-    //if(choose !== -1) return false;
     score = Math.floor((10000/((new Date().getTime() - timeStart)+1)) * 1000) / 1000;
     choose = e.getAttribute('index');
     for(let ele of $$(".box-main")){
@@ -153,7 +154,6 @@ function saveAns(checkAns, score){
     const player = roomClient.player.find(player => player.id === socket.id);
     player.score += score;
     player.a[round] = {a:checkAns, q: round, qid: roomClient.questions[round]._id}
-    console.log(player)
     socket.emit('savePlayer', ({_index:roomClient._i, players: roomClient.player}));
 }
 
@@ -162,19 +162,17 @@ function toggAns(){
     if($(`#list-answers.show-answer`) == null){
         $(`.box-main[index="${i_ans}"]`).classList.add('answer', 'active');
         $(`#list-answers`).classList.add('show-answer');
-        $('#next-round').classList.remove('hide')
+        if(Client.masterRoom === true)$('#next-round').classList.remove('hide')
         return;
     }
     $(`.box-main[index="${i_ans}"]`).classList.remove('answer', 'active');
-    if(choose !== -1)$(`.box-main[index="${choose}"]`).classList.remove('active')
+    if(choose !== -1)$(`.box-main[index="${choose}"]`).classList.remove('active');
     $(`#list-answers`).classList.remove('show-answer');
-    $('#next-round').classList.add('hide');
+    if(Client.masterRoom === true)$('#next-round').classList.add('hide');
 }
 
 $("#next-round").addEventListener('click', ()=>{
-    toggAns();
-    round++;
-    gameStarted();
+    socket.emit('nextRound', roomClient._i)
 })
 
 function createEle(ele){
@@ -261,6 +259,13 @@ socket.on('startGame', ()=>{
         gameView.classList.remove('hide');
         gameStarted();
     }, time*1000);
+})
+socket.on('nextRound', (res)=>{
+    console.log('Here')
+    if(roomClient.setting.stop === 0) return;
+    round++;
+    gameStarted();
+    toggAns()
 })
 socket.on('resJoinRoom', (res)=>{
     if(res.sts === 0){
