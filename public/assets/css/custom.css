@@ -380,6 +380,11 @@ button:focus {
   margin: 10px;
 }
 
+.room-status div{
+  display: flex;
+  align-items: center;
+}
+
 .game {
   height: inherit;
   display: flex;

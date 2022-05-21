@@ -62,9 +62,9 @@ btnOpenGame.addEventListener('click', (e)=>{
     $("div.form").style.display = 'none';
     $('.queue-room').classList.remove('hide');
     if(socket.id === roomClient.player[0].id){
-        $('.room-status').classList.remove('hide');
+        $('#status-info').classList.remove('hide');
     }else{
-        $('.room-status').innerHTML = "";
+        $('#status-info').innerHTML = "";
     }
     $('.room-footer #room-name').innerHTML = roomClient.name;
     if(Client.masterRoom === true) $('#limit-user').innerHTML = ('0'+ele['limit-players']).slice(-2);
@@ -213,7 +213,6 @@ $$(`[room-name]`).forEach(element => {
         tgNotify({sts:1, msg:`Copied the text: <b>${room}</b>`})
     })
 })
-
 // Sound effect
 const path_sound = './assets/sounds/'
 const sounds = {
@@ -224,15 +223,18 @@ const sounds = {
 const context = new AudioContext()
 let room_queue = new Howl({
     src: [sounds['queue']],
-    loop: true
+    loop: true,
+    volume: vol
 })
 let room_started_game = new Howl({
     src: [sounds['startGame']],
-    loop: true
+    loop: true,
+    volume: vol
 })
 let room_end_game = new Howl({
     src: [sounds['endGame']],
-    loop: true
+    loop: true,
+    volume: vol
 })
 $('button#btn-next-step').addEventListener('click', function(){
     room_queue.play()
@@ -248,6 +250,28 @@ function sound_end_game(){
 }
 // ./End sound effefct
 
+// volume
+const btn_vol = $('#volume input').classList;
+var vol = 0.7;
+window.addEventListener('click', function(e){
+    // const btn_vol = $('#volume input').classList
+    const isbtn_vol = e.target.type == 'range' || (e.target.tagName === 'DIV' && e.target.getAttribute('id') === 'volume') || e.target.tagName === 'rect' || e.target.tagName === 'path';
+    if(btn_vol.contains('hide') === false && isbtn_vol === false){
+        btn_vol.add('hide')
+    }
+})
+$('svg').addEventListener('click', ()=>{
+    // const btn_vol = $('#volume input').classList
+    if(btn_vol.contains('hide')){
+        btn_vol.remove('hide')
+        return;
+    }
+    $('#volume input').classList.add('hide')
+})
+$('#volume input').addEventListener('change', function(e){
+    Howler.volume(e.target.value/10)
+})
+// ./ end volume
 // Socket
 socket.on('startGame', ()=>{
     $('.main.container').classList.add('hide')
@@ -263,9 +287,9 @@ socket.on('startGame', ()=>{
 socket.on('nextRound', (res)=>{
     console.log('Here')
     if(roomClient.setting.stop === 0) return;
+    toggAns();
     round++;
     gameStarted();
-    toggAns()
 })
 socket.on('resJoinRoom', (res)=>{
     if(res.sts === 0){
