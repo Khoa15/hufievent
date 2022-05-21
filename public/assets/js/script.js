@@ -126,6 +126,7 @@ function gameStarted(time=roomClient.setting.time){
     const timeOut = setTimeout(()=>{
         togAnimation();
         saveAns(choose, score)
+        toggRank()
         if(roomClient.setting.stop === 0){
             round++;
             gameStarted();
@@ -150,13 +151,17 @@ function togAnimation(){
     running.add('run-process')
 }
 function saveAns(checkAns, score){
-    if(checkAns != roomClient.questions[round].qa) return false;
     const player = roomClient.player.find(player => player.id === socket.id);
-    player.score += score;
+    if(checkAns != roomClient.questions[round].qa) player.score += score;
     player.a[round] = {a:checkAns, q: round, qid: roomClient.questions[round]._id}
     socket.emit('savePlayer', ({_index:roomClient._i, players: roomClient.player}));
 }
+function toggRank(){
+    const answers = [0, 0, 0, 0];
+    roomClient.player.forEach(player => answers[Number(player.a[round].a)]++)
+    console.log(answers)
 
+}
 function toggAns(){
     const i_ans = roomClient.questions[round].qa
     if($(`#list-answers.show-answer`) == null){
