@@ -17,6 +17,7 @@ const Client = [{
     roomClient: {},
     setting: {}
 }]
+let ime = -1;
 const toggleFormData = (status=1) => {
     let sts = (status) ? 'unset' : 'none';
     $('form#form-data').style.display = sts;
@@ -157,7 +158,7 @@ function saveAns(checkAns, score){
     if(checkAns != roomClient.questions[round].qa) player.score += score;
     player.a[round] = {a:checkAns, q: round, qid: roomClient.questions[round]._id}
     //socket.emit('savePlayer', ({_index:roomClient._i, players: roomClient.player}));
-    socket.emit('setAnswer', ({_index: roomClient._i, _iplayer: roomClient.ime, round: round, a: checkAns}))
+    socket.emit('setAnswer', ({_index: roomClient._i, _iplayer: ime, round: round, a: checkAns}))
 }
 function toggRank(){
     const answers = [0, 0, 0, 0];
@@ -309,6 +310,7 @@ socket.on('resJoinRoom', (res)=>{
     $('h1.id-room').innerHTML = res.name;
     toggleLoadingBar(0);
     roomClient = res;
+    if(ime === -1)ime = res.player.length - 1;
 })
 socket.on('roomName', (room)=>{
     $('#next-step').style.display = 'unset';

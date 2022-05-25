@@ -18,7 +18,6 @@ class Room{
         const index = data.findIndex(room => (room !== undefined) ? room.name === id : false)
         if(index == -1 || data[index].setting.players === data[index].total) return this.message({msg:"Phòng không tồn tại hoặc đã không còn chỗ trống"})
         data[index].player = [...data[index].player, {id: playerId, score: 0, a:[], permit: permit}]
-        data[index].ime = data[index].player.length - 1;
         data[index].total++
         return this.message({sts:1})
     }
