@@ -616,6 +616,28 @@ select{
   }
 }
 
+/* body{
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: inherit;
+  animation: heart 1s linear infinite;
+}
+@keyframes heart{
+  0%{
+    box-shadow: inset 0px 0px 10px 2px #ff0000;
+  }
+  50%{
+    box-shadow: inset 0px 0px 20px 5px #ff0000;
+  }
+  60%{
+    box-shadow: inset 0px 0px 25px 3px #ff0000;
+  }
+  100%{
+    box-shadow: inset 0px 0px 10px 2px #ff0000;
+  }
+} */
+
 .hide {
   display: none;
 }

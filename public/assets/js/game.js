@@ -2,7 +2,7 @@ class Room{
     constructor(){
         this.room = []
         this.length = 0
-        this.valRoom = (name) =>{ return {name: name, player: [], total: 0, setting: {topic: -1, players: 10, questions: 5, time: 10, stop: 0}}}
+        this.valRoom = (name) =>{ return {name: name, player: [], ime: -1, total: 0, setting: {topic: -1, players: 10, questions: 5, time: 10, stop: 0}}}
     }
     createRoom(_id, playerId){
         if(this.room.find(room => (room !== undefined) ? room.name === _id : false) !== undefined) return false
@@ -18,6 +18,7 @@ class Room{
         const index = data.findIndex(room => (room !== undefined) ? room.name === id : false)
         if(index == -1 || data[index].setting.players === data[index].total) return this.message({msg:"Phòng không tồn tại hoặc đã không còn chỗ trống"})
         data[index].player = [...data[index].player, {id: playerId, score: 0, a:[], permit: permit}]
+        data[index].ime = data[index].player.length - 1;
         data[index].total++
         return this.message({sts:1})
     }

@@ -124,6 +124,7 @@ function gameStarted(time=roomClient.setting.time){
         $$('.box-main')[i].classList.remove('active')
     }
     const timeOut = setTimeout(()=>{
+        console.log(roomClient.player)
         togAnimation();
         saveAns(choose, score)
         toggRank()
@@ -152,15 +153,18 @@ function togAnimation(){
 }
 function saveAns(checkAns, score){
     const player = roomClient.player.find(player => player.id === socket.id);
+    console.log(checkAns, roomClient.questions[round].qa)
     if(checkAns != roomClient.questions[round].qa) player.score += score;
     player.a[round] = {a:checkAns, q: round, qid: roomClient.questions[round]._id}
-    socket.emit('savePlayer', ({_index:roomClient._i, players: roomClient.player}));
+    //socket.emit('savePlayer', ({_index:roomClient._i, players: roomClient.player}));
+    socket.emit('setAnswer', ({_index: roomClient._i, _iplayer: roomClient.ime, a: checkAns})
 }
 function toggRank(){
     const answers = [0, 0, 0, 0];
-    roomClient.player.forEach(player => answers[Number(player.a[round].a)]++)
+    roomClient.player.forEach(player => (player.a[round]!= undefined) ? answers[Number(player.a[round].a)]++ : false)
     console.log(answers)
-
+    // const answer = [ 8, 8, 8, 8 ];
+    // console.log(answers)
 }
 function toggAns(){
     const i_ans = roomClient.questions[round].qa
@@ -259,14 +263,12 @@ function sound_end_game(){
 const btn_vol = $('#volume input').classList;
 var vol = 0.7;
 window.addEventListener('click', function(e){
-    // const btn_vol = $('#volume input').classList
     const isbtn_vol = e.target.type == 'range' || (e.target.tagName === 'DIV' && e.target.getAttribute('id') === 'volume') || e.target.tagName === 'rect' || e.target.tagName === 'path';
     if(btn_vol.contains('hide') === false && isbtn_vol === false){
         btn_vol.add('hide')
     }
 })
 $('svg').addEventListener('click', ()=>{
-    // const btn_vol = $('#volume input').classList
     if(btn_vol.contains('hide')){
         btn_vol.remove('hide')
         return;
