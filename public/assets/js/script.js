@@ -157,7 +157,7 @@ function saveAns(checkAns, score){
     if(checkAns != roomClient.questions[round].qa) player.score += score;
     player.a[round] = {a:checkAns, q: round, qid: roomClient.questions[round]._id}
     //socket.emit('savePlayer', ({_index:roomClient._i, players: roomClient.player}));
-    socket.emit('setAnswer', ({_index: roomClient._i, _iplayer: roomClient.ime, a: checkAns})
+    socket.emit('setAnswer', ({_index: roomClient._i, _iplayer: roomClient.ime, round: round, a: checkAns}))
 }
 function toggRank(){
     const answers = [0, 0, 0, 0];

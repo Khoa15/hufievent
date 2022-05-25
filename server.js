@@ -61,6 +61,13 @@ io.on('connection', (socket)=>{
         }
     })
 
+    socket.on('setAnswer', ({_index, _iplayer, round, a})=>{
+        if(game.room[_index] === undefined || game.room[_index].player[_iplayer] === undefined) return false;
+        const player = game.room[_index].player[_iplayer].a[round] = {a: a, q: round}
+        console.log(_iplayer)
+        io.to(game.room[_index].name).emit('updateState', game.room[_index])
+    })
+
     socket.on('startGame', (idRoom)=>{
         io.to(idRoom).emit('startGame')
         io.to(idRoom).emit('statusGame', 2)
