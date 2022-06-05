@@ -25,7 +25,6 @@ const dataRoute = require('./routes/dataRoute')
 
 app.use('/', homeRoute)
 app.use('/api/data', dataRoute)
-let answer = []
 
 io.on('connection', (socket)=>{
     console.log(`A user connected`)
@@ -53,7 +52,7 @@ io.on('connection', (socket)=>{
     socket.on('openGame', ({_i, formData})=>{
         if(game.room[_i] === undefined) return false;
         game.setStatus(_i, 1)
-        if(formData){
+        if(formData.username !== undefined){
             fetch(`${process.env.SERVER}/api/data/?limit=${formData['limit-questions']}&topic=${formData['topic']}`,{method: 'get'}).then(response => response.json()).then(data =>{
                 game.setRoom(_i, formData)
                 game.createQuestion(_i, data.data)
@@ -62,11 +61,8 @@ io.on('connection', (socket)=>{
         }
     })
     socket.on('setAnswer', ({_index, _iplayer, round, a})=>{
-        answer = [...answer, {_index, _iplayer, round, a}]
-        console.log(answer)
-        // if(game.room[_index] === undefined || game.room[_index].player[_iplayer] === undefined) return false;
-        // const player = game.room[_index].player[_iplayer].a[round] = {a: a, q: round}
-        // io.to(game.room[_index].name).emit('updateState', game.room[_index])
+        game.room[_index].player[_iplayer].a[round] = Number(a);
+        io.to(game.room[_index].name).emit('updateState', game.room[_index])
     })
 
     socket.on('startGame', (idRoom)=>{

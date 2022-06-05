@@ -125,7 +125,6 @@ function gameStarted(time=roomClient.setting.time){
         $$('.box-main')[i].classList.remove('active')
     }
     const timeOut = setTimeout(()=>{
-        console.log(roomClient.player)
         togAnimation();
         saveAns(choose, score)
         toggRank()
@@ -154,18 +153,23 @@ function togAnimation(){
 }
 function saveAns(checkAns, score){
     const player = roomClient.player.find(player => player.id === socket.id);
-    console.log(checkAns, roomClient.questions[round].qa)
     if(checkAns != roomClient.questions[round].qa) player.score += score;
     player.a[round] = {a:checkAns, q: round, qid: roomClient.questions[round]._id}
-    //socket.emit('savePlayer', ({_index:roomClient._i, players: roomClient.player}));
     socket.emit('setAnswer', ({_index: roomClient._i, _iplayer: ime, round: round, a: checkAns}))
 }
 function toggRank(){
-    const answers = [0, 0, 0, 0];
-    roomClient.player.forEach(player => (player.a[round]!= undefined) ? answers[Number(player.a[round].a)]++ : false)
-    console.log(answers)
-    // const answer = [ 8, 8, 8, 8 ];
-    // console.log(answers)
+    $('#rank').classList.remove('hide')
+    const answers = [0, 0, 0, 0], total = roomClient.player.length
+    roomClient.player.forEach(player => {
+        if(player.a[round] == undefined) return;
+        
+        answers[Number(player.a[round].a)]++
+    })
+    for (let i = 0; i < answers.length; i++) {
+        $(`.col-rank[index="${i}"] .val`).innerHTML = answers[i]
+        $(`.col-rank[index="${i}"] .col`).style.height = Math.floor(answers[i] * 100 / total) + "%";
+    }
+
 }
 function toggAns(){
     const i_ans = roomClient.questions[round].qa
