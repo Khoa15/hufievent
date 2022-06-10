@@ -19,12 +19,16 @@ const Client = [{
 }]
 let ime = -1;
 const toggleFormData = (status=1) => {
-    let sts = (status) ? 'unset' : 'none';
-    $('form#form-data').style.display = sts;
+    var form = $('form#form-data').classList
+    if(form.contains('hide')){
+        form.remove('hide')
+        return false;
+    }
+    form.add('hide')
 }
 
 const toggleLoadingBar = (status=1) => {
-    let sts = (status) ? 'unset' : 'none';
+    let sts = (status) ? 'flex' : 'none';
     $('div.loading-bar').style.display = sts;
 }
 $('form#form-data[step="1"]').addEventListener('submit', (e)=>{
@@ -60,7 +64,7 @@ btnOpenGame.addEventListener('click', (e)=>{
     }
     socket.emit('openGame', {_i: roomClient._i, formData: ele});
     socket.emit('setName', ({username: username.value, _index: roomClient._i}));
-    $("div.form").style.display = 'none';
+    $("div.triangle").style.display = 'none';
     $('.queue-room').classList.remove('hide');
     if(socket.id === roomClient.player[0].id){
         $('#status-info').classList.remove('hide');
@@ -110,7 +114,7 @@ function gameStarted(time=roomClient.setting.time){
         endGame();
         return true;
     }
-    togAnimation();
+    togAnimation();toggRank();
     choose = -1;
     console.log("Answer is: " + roomClient.questions[round].qa);
     const html_question = $('.title-question');
@@ -126,8 +130,7 @@ function gameStarted(time=roomClient.setting.time){
     }
     const timeOut = setTimeout(()=>{
         togAnimation();
-        saveAns(choose, score)
-        toggRank()
+        saveAns(choose, score);
         if(roomClient.setting.stop === 0){
             round++;
             gameStarted();
@@ -154,16 +157,22 @@ function togAnimation(){
 function saveAns(checkAns, score){
     const player = roomClient.player.find(player => player.id === socket.id);
     if(checkAns != roomClient.questions[round].qa) player.score += score;
-    player.a[round] = {a:checkAns, q: round, qid: roomClient.questions[round]._id}
+    player.a[round] = Number(checkAns)
     socket.emit('setAnswer', ({_index: roomClient._i, _iplayer: ime, round: round, a: checkAns}))
 }
 function toggRank(){
+    console.log($('#rank').classList)
+    if($('#rank').classList.contains('hide') == false){
+        $('#rank').classList.add('hide');
+        return false;
+    }
     $('#rank').classList.remove('hide')
     const answers = [0, 0, 0, 0], total = roomClient.player.length
+    console.log(roomClient.player)
     roomClient.player.forEach(player => {
         if(player.a[round] == undefined) return;
         
-        answers[Number(player.a[round].a)]++
+        answers[Number(player.a[round])]++
     })
     for (let i = 0; i < answers.length; i++) {
         $(`.col-rank[index="${i}"] .val`).innerHTML = answers[i]
@@ -310,14 +319,14 @@ socket.on('resJoinRoom', (res)=>{
         toggleLoadingBar(0);
         return false;
     }
-    $('[step="2"]').style.display = 'unset';
+    $('[step="2"]').classList.remove('hide')
     $('h1.id-room').innerHTML = res.name;
     toggleLoadingBar(0);
     roomClient = res;
     if(ime === -1)ime = res.player.length - 1;
 })
 socket.on('roomName', (room)=>{
-    $('#next-step').style.display = 'unset';
+    $('#next-step').classList.remove('hide')
     $('h1.id-room').innerHTML = `${room.name}`;
     toggleLoadingBar(0);
     socket.emit('joinRoom', room.name);
@@ -328,6 +337,10 @@ socket.on('roomName', (room)=>{
 })
 socket.on('statusGame', (sts)=>{
     roomClient.status = sts;
+})
+socket.on('updateRank', (player)=>{
+    roomClient.player = player;
+    toggRank();
 })
 socket.on('updateState', (room)=>{
     if(room.player[0] === null){
@@ -362,3 +375,12 @@ function tgNotify(result){
     return;
 }
 //endshow notification
+
+// document.addEventListener('visibilitychange', function() {
+//     document.hidden;
+// });
+
+$('#back-form').addEventListener('click', ()=>{
+    toggleFormData()
+    $('form#next-step[step="2"]').classList.add('hide')
+})

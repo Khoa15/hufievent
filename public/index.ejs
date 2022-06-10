@@ -10,57 +10,65 @@
 <body>
     <div class="fade-warning"></div>
     <div class="box">
+        <div class="bg">
+            <div class="cloud">123</div>
+            <div class="mountains">123</div>
+            <div class="sand">123</div>
+        </div>
         <div class="notification hide">
             <div class="notify">
                 Không thể đăng nhập vào phòng này
             </div>
         </div>
         <div class="main container">
-            <div class="form">
-                <div class="loading-bar hide">
-                    <div class="loading"></div>
+            
+            <div class="triangle">
+                <div class="form">
+                    <div class="loading-bar hide">
+                        <div class="loading"></div>
+                    </div>
+                    <form class="" id="form-data" step="1">
+                        <input type="text" id="id-room" placeholder="Nhập mã phòng" autofocus autocomplete="off" required>
+                        <div class="space-btn">
+                            <button type="submit" class="bg-success" id="btn-join">Tham Gia</button>
+                        </div>
+                        <div class="space-btn">
+                            <button type="button" id="btn-create-room" >Tạo phòng</button>
+                        </div>
+                    </form>
+                    <form class="hide" id="next-step" box-setting-room-player step="2">
+                        <h1 class="id-room text-center" room-name="true"></h1>
+                        <input type="text" placeholder="Nhập tên" name="username" id="username" autofocus value="Ako">
+                        <div class="main hide" id="box-setting"> 
+                            <select name="topic" id="inp-topic">
+                                <option value="-1" disabled selected>Chủ đề random</option>
+                                <option value="1">Sinh hoạt công dân đầu khóa</option>
+                                <option value="2">Sinh hoạt công dân giữa khóa</option>
+                            </select>
+                            <label>Số lượng người chơi</label>
+                            <div class="group-input">
+                                <input type="number" value="10" min="1" name="limit-players" id="inp-limit-players">
+                                <span>/500</span>
+                            </div>
+                            <label>Số lượng câu hỏi</label>
+                            <div class="group-input">
+                                <input type="number" value="5" min="1" name="limit-questions" id="inp-limit-questions">
+                                <span>/50</span>
+                            </div>
+                            <label>Thời gian(s)</label>
+                            <div class="group-input">
+                                <input type="number" value="10" min="5" name="limit-time" id="inp-limit-time">
+                                <span>/60</span>
+                            </div>
+                            <label for="stop" class="text-center">Dừng mỗi màn</label>
+                            <input type="checkbox" id="stop" name="stop" checked>
+                        </div>
+                        <div class="grid">
+                            <button type="button" class="btn-a" id="back-form">&larr; Trở về</button>
+                            <button type="submit" class="btn-a" id="btn-next-step">Bắt đầu &rarr;</button>
+                        </div>
+                    </form>
                 </div>
-                <form class="" id="form-data" step="1">
-                    <input type="text" id="id-room" placeholder="Nhập mã phòng" autofocus autocomplete="off" required>
-                    <div class="space-btn">
-                        <button type="submit" class="bg-success" id="btn-join">Tham Gia</button>
-                    </div>
-                    <div class="space-btn">
-                        <button type="button" id="btn-create-room" >Tạo phòng</button>
-                    </div>
-                </form>
-                <form class="hide" id="next-step" box-setting-room-player step="2">
-                    <h1 class="id-room text-center" room-name="true"></h1>
-                    <input type="text" placeholder="Nhập tên" name="username" id="username" autofocus value="Ako">
-                    <div class="main hide" id="box-setting"> 
-                        <select name="topic" id="inp-topic">
-                            <option value="-1" disabled selected>Chủ đề random</option>
-                            <option value="1">Sinh hoạt công dân đầu khóa</option>
-                            <option value="2">Sinh hoạt công dân giữa khóa</option>
-                        </select>
-                        <label>Số lượng người chơi</label>
-                        <div class="group-input">
-                            <input type="number" value="10" min="1" name="limit-players" id="inp-limit-players">
-                            <span>/500</span>
-                        </div>
-                        <label>Số lượng câu hỏi</label>
-                        <div class="group-input">
-                            <input type="number" value="5" min="1" name="limit-questions" id="inp-limit-questions">
-                            <span>/50</span>
-                        </div>
-                        <label>Thời gian(s)</label>
-                        <div class="group-input">
-                            <input type="number" value="10" min="5" name="limit-time" id="inp-limit-time">
-                            <span>/60</span>
-                        </div>
-                        <label for="stop" class="text-center">Dừng mỗi màn</label>
-                        <input type="checkbox" id="stop" name="stop" checked>
-                    </div>
-                    <div class="grid">
-                        <!-- <button type="button" class="btn-a" id="setting">Cài đặt</button> -->
-                        <button type="submit" class="btn-a" id="btn-next-step">Bắt đầu &rarr;</button>
-                    </div>
-                </form>
             </div>
             <div class="queue-room hide">
                <div class="room-brand" id="list-user-queue">
@@ -97,7 +105,7 @@
                 </div>
                 <button class="btn-a hide" style="position: absolute;right:0;text-align: right;" id="next-round">Next</button>
             </div>
-            <div class="main container hide" id="rank">
+            <div class="main container" id="rank">
                 <div class="col-rank" index="0">
                     <label class="val">10</label>
                     <div class="col"></div>

@@ -62,7 +62,7 @@ io.on('connection', (socket)=>{
     })
     socket.on('setAnswer', ({_index, _iplayer, round, a})=>{
         game.room[_index].player[_iplayer].a[round] = Number(a);
-        io.to(game.room[_index].name).emit('updateState', game.room[_index])
+        io.to(game.room[_index].name).emit('updateRank', game.room[_index].player)
     })
 
     socket.on('startGame', (idRoom)=>{
