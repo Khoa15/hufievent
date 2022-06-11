@@ -16,7 +16,7 @@ class Room{
     joinRoom(id, playerId, permit=1){
         const data = this.room
         const index = data.findIndex(room => (room !== undefined) ? room.name === id : false)
-        if(index == -1 || data[index].setting.players === data[index].total) return this.message({msg:"Phòng không tồn tại hoặc đã không còn chỗ trống"})
+        if(index == -1 || data[index].setting.players === data[index].total || data[index].status == 1) return this.message({msg:"Phòng không tồn tại hoặc đã không còn chỗ trống"})
         data[index].player = [...data[index].player, {id: playerId, score: 0, a:[], permit: permit}]
         data[index].total++
         return this.message({sts:1})
@@ -90,6 +90,20 @@ class Room{
     }
     message({msg, sts=0}){
         return {sts: sts, msg: msg};
+    }
+    virtualBot(length=10){
+        var name = [
+            "Albania", "Algeria", "Andorra", "Angola", "Anguilla", "Antarctica", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Bermuda", "Bhutan", "Botswana", "Brazil", "Bulgaria", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Colombia", "Costa Rica", "Croatia", "Curaçao", "Cyprus", "Czechia", "Denmark", "Djibouti", "Dominica", "Ecuador", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Finland", "France", "Georgia", "Germany", "Gibraltar", "Greece", "Greenland", "Grenada", "Guadeloupe", "Guatemala", "Guernsey", "Guinea", "Guyana", "Honduras", "Hong Kong", "Hungary", "Iceland", "Indonesia", "Ireland", "Israel", "Jamaica", "Jersey", "Jordan", "Kazakhstan", "Kiribati", "Kuwait", "Kyrgyzstan", "Latvia", "Lebanon", "Lesotho", "Liberia", "Lithuania", "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldives", "Martinique", "Mauritania", "Mauritius", "Mayotte", "Mexico", "Monaco", "Mongolia", "Montenegro", "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nicaragua", "Nigeria", "Norway", "Pakistan", "Panama", "Paraguay", "Pitcairn", "Poland", "Portugal", "Romania", "Rwanda", "Réunion", "San Marino", "Senegal", "Serbia", "Seychelles", "Singapore", "Slovakia", "Slovenia", "Somalia", "Sri Lanka", "Suriname", "Sweden", "Taiwan", "Tajikistan", "Thailand", "Tokelau", "Tunisia", "Turkey", "Tuvalu", "Uganda", "Ukraine", "Uruguay", "Uzbekistan", "Vanuatu", "Viet Nam", "Zambia", "Zimbabwe"
+        ]
+        var index_room = this.length - 1
+        const data = this.room[index_room]
+        for(let i = 0; i < length; i++){
+            //this.joinRoom("MYBOTISRUNNING", i, !i)
+            data.player = [...data.player, {id: i, score: 0, a:[], permit: -1}]
+            data.total++
+            this.setName(i, name[Math.floor(Math.random() * name.length)], index_room)
+        }
+        return 1
     }
 }
 

@@ -13,7 +13,7 @@ body {
 
 body {
   font: 16px 'Bitter', serif;
-  background: #ededed;
+  background: #eefcf5;
 }
 
 form{
@@ -220,11 +220,12 @@ label{
 
 .main[view="rank"] {
   align-content: flex-start;
+  overflow: auto;
 }
 
 table {
   width: 100%;
-  margin: 10px 0px 0px;
+  margin: 10px 0px 50px;
 }
 
 table * {
@@ -337,7 +338,15 @@ input {
   max-width: 0px;
   transition: .5s ease;
   overflow: hidden;
+}
+
+.form form#next-step{
+  height: 100%;
   overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: row;
 }
 
 .space-btn {
@@ -534,6 +543,7 @@ button:focus {
 .grid{
   display: flex;
   flex-direction: row;
+  width: 100%;
 }
 
 select{
@@ -693,9 +703,8 @@ select{
 
 .triangle:hover .form{
   display: flex;
-  max-width: 200px;
+  max-width: 210px;
   padding: 20px 35px 15px;
-  
 }
 
 @keyframes setwidth{
@@ -740,7 +749,14 @@ select{
     border-bottom-color: #f1c40f;
   }
 }
-
+.control-panel{
+  position: fixed;
+  bottom: 0;
+  margin: auto;
+  width: 200px;
+  display: flex;
+  justify-content: center;
+}
 .hide {
-  display: none;
+  display: none !important;
 }

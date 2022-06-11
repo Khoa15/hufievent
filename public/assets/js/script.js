@@ -80,7 +80,7 @@ btnCreRoom.addEventListener('click', ()=>{
     toggleFormData(0);
     toggleLoadingBar();
     $('#box-setting').classList.remove('hide')
-    $('#box-setting').style.overflow = 'auto'
+    $('#box-setting').style.overflow = 'hidden'
     let h = 1;
     let id = setInterval(()=>{
         if(h >= 317){
@@ -105,7 +105,7 @@ function showList(lists){
 }
 
 btnStartGame.addEventListener('click', ()=>{
-    socket.emit('startGame', roomClient.name);
+    socket.emit('startGame', roomClient._i);
 })
 
 let timeStart = 0, choose = -1, round = 0, score = 0;
@@ -141,7 +141,6 @@ const checkAns = (e)=>{
     score = Math.floor((10000/((new Date().getTime() - timeStart)+1)) * 1000) / 1000;
     choose = e.getAttribute('index');
     for(let ele of $$(".box-main")){
-        console.log(ele)
         ele.classList.remove('active')
     }
     e.classList.add('active')
@@ -156,7 +155,8 @@ function togAnimation(){
 }
 function saveAns(checkAns, score){
     const player = roomClient.player.find(player => player.id === socket.id);
-    if(checkAns != roomClient.questions[round].qa) player.score += score;
+    if(checkAns == roomClient.questions[round].qa) player.score += score;
+    console.log(player.score)
     player.a[round] = Number(checkAns)
     socket.emit('setAnswer', ({_index: roomClient._i, _iplayer: ime, round: round, a: checkAns}))
 }
@@ -210,19 +210,23 @@ function endGame(){
     sound_end_game()
     gameView.classList.add('hide');
     boardScore.classList.remove('hide');
+    $('.control-panel').classList.remove('hide')
     const rank_player = roomClient.player.sort((a, b)=> b.score - a.score);
     let view = $('.viewRank');
     view.innerHTML = "";
+    var color = ["red", "orange", "green", "#eee"];
     for (let i = 0; i < rank_player.length; i++) {
         const tr = createEle('tr');
-        const rank = createEle('td');
+        // const rank = createEle('td');
         const name = createEle('td');
         const score = createEle('td');
-        rank.appendChild(createText(i+1));
+        // rank.appendChild(createText(i+1));
         name.classList.add('text-left');
         name.appendChild(createText(rank_player[i].name));
         score.appendChild(createText(Math.floor(rank_player[i].score * 100)/100));
-        tr.appendChild(rank);
+
+        tr.style.background = color[(i < 3 && (rank_player[i].score) != 0) ? i : 3];
+        // tr.appendChild(rank);
         tr.appendChild(name);
         tr.appendChild(score);
         view.appendChild(tr);
@@ -383,4 +387,13 @@ function tgNotify(result){
 $('#back-form').addEventListener('click', ()=>{
     toggleFormData()
     $('form#next-step[step="2"]').classList.add('hide')
+})
+
+$('#btn-play-again').addEventListener('click', ()=>{
+    socket.emit('resetGame', (roomClient._i));
+    $('[view="rank"]').classList.add('hide')
+    $('.main.container').classList.remove('hide')
+    $('.queue-room').classList.add('hide')
+    $('.triangle').style.display = 'flex'
+    $('.control-panel').classList.add('hide')
 })

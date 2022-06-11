@@ -25,10 +25,8 @@ const dataRoute = require('./routes/dataRoute')
 
 app.use('/', homeRoute)
 app.use('/api/data', dataRoute)
-
 io.on('connection', (socket)=>{
     console.log(`A user connected`)
-
     socket.on('joinRoom', (name)=>{
         const result = game.joinRoom(name, socket.id)
         if(result.sts){
@@ -56,18 +54,26 @@ io.on('connection', (socket)=>{
             fetch(`${process.env.SERVER}/api/data/?limit=${formData['limit-questions']}&topic=${formData['topic']}`,{method: 'get'}).then(response => response.json()).then(data =>{
                 game.setRoom(_i, formData)
                 game.createQuestion(_i, data.data)
-                io.to(game.room[_i].name).emit('updateState', game.room[_i])
+                if(game.virtualBot(99)){
+                    io.to(game.room[_i].name).emit('updateState', game.room[_i])
+                }
             })
         }
     })
     socket.on('setAnswer', ({_index, _iplayer, round, a})=>{
         game.room[_index].player[_iplayer].a[round] = Number(a);
+        for(let i = _iplayer+1; i < game.room[_index].player.length; i++){
+            a = Number(Math.floor(Math.random() * 4))
+            game.room[_index].player[i].a[round] = a;
+            if(game.room[_index].questions[round].qa == a) game.room[_index].player[i].score += Math.random();
+        }
         io.to(game.room[_index].name).emit('updateRank', game.room[_index].player)
     })
 
-    socket.on('startGame', (idRoom)=>{
-        io.to(idRoom).emit('startGame')
-        io.to(idRoom).emit('statusGame', 2)
+    socket.on('startGame', (_index)=>{
+        game.setStatus(_index, 2)
+        io.to(game.room[_index].name).emit('startGame')
+        io.to(game.room[_index].name).emit('statusGame', 2)
     })
 
     socket.on('nextRound', (_i)=>{
@@ -85,6 +91,10 @@ io.on('connection', (socket)=>{
             createRoom()
         }
         createRoom()
+    })
+
+    socket.on('resetGame', (_index)=>{
+        delete game.room[_index];
     })
 
     socket.on('disconnect', ()=>{
