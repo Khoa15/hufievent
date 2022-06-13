@@ -49,12 +49,11 @@ io.on('connection', (socket)=>{
     
     socket.on('openGame', ({_i, formData})=>{
         if(game.room[_i] === undefined) return false;
-        game.setStatus(_i, 1)
         if(formData.username !== undefined){
             fetch(`${process.env.SERVER}/api/data/?limit=${formData['limit-questions']}&topic=${formData['topic']}`,{method: 'get'}).then(response => response.json()).then(data =>{
                 game.setRoom(_i, formData)
                 game.createQuestion(_i, data.data)
-                if(game.virtualBot(99)){
+                if(game.virtualBot(3)){
                     io.to(game.room[_i].name).emit('updateState', game.room[_i])
                 }
             })

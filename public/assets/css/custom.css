@@ -577,6 +577,7 @@ select{
 .notification{
   max-width: 800px;
   position: absolute;
+  z-index: 1;
   border-radius: 10px;
   top: 30px;
   background-color: white;
@@ -733,6 +734,15 @@ select{
   border-bottom: 230px solid #555;
   border-image: url('../imgs/pyramid-right.png');
   /* animation: pyramid 4s linear infinite; */
+}
+
+@media (max-width: 400px) {
+  .triangle::before{
+    border-left: 70px solid transparent;
+  }
+  .triangle::after{
+    border-right: 70px solid transparent;
+  }
 }
 
 @keyframes pyramid{

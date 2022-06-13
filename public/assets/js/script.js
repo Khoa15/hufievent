@@ -19,7 +19,8 @@ const Client = [{
 }]
 let ime = -1;
 const toggleFormData = (status=1) => {
-    var form = $('form#form-data').classList
+    var form = $('form#form-data[step="1"]').classList
+    console.log($('form#form-data[step="1"]'))
     if(form.contains('hide')){
         form.remove('hide')
         return false;
@@ -43,6 +44,22 @@ $('form[step="2"]').addEventListener('submit', (e)=>{
     btnOpenGame.click();// open or join room
 })
 let ele = {}
+btnCreRoom.addEventListener('click', ()=>{
+    socket.emit('createRoom');
+    toggleFormData(0);
+    toggleLoadingBar();
+    $('#box-setting').classList.remove('hide')
+    $('#box-setting').style.overflow = 'hidden'
+    let h = 1;
+    let id = setInterval(()=>{
+        if(h >= 317){
+            clearInterval(id)
+        }
+        h+=5;
+        $('#box-setting').style.height = h + 'px'
+    }, 5)
+})
+
 btnOpenGame.addEventListener('click', (e)=>{
     e.preventDefault()
     let username = $('#username');
@@ -73,22 +90,6 @@ btnOpenGame.addEventListener('click', (e)=>{
     }
     $('.room-footer #room-name').innerHTML = roomClient.name;
     if(Client.masterRoom === true) $('#limit-user').innerHTML = ('0'+ele['limit-players']).slice(-2);
-})
-
-btnCreRoom.addEventListener('click', ()=>{
-    socket.emit('createRoom');
-    toggleFormData(0);
-    toggleLoadingBar();
-    $('#box-setting').classList.remove('hide')
-    $('#box-setting').style.overflow = 'hidden'
-    let h = 1;
-    let id = setInterval(()=>{
-        if(h >= 317){
-            clearInterval(id)
-        }
-        h+=5;
-        $('#box-setting').style.height = h + 'px'
-    }, 5)
 })
 
 function addNode(content){
@@ -387,6 +388,8 @@ function tgNotify(result){
 $('#back-form').addEventListener('click', ()=>{
     toggleFormData()
     $('form#next-step[step="2"]').classList.add('hide')
+    $('#box-setting').classList.add('hide')
+    $('#box-setting').style.overflow = 'unset'
 })
 
 $('#btn-play-again').addEventListener('click', ()=>{

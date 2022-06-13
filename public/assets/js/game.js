@@ -8,7 +8,7 @@ class Room{
         if(this.room.find(room => (room !== undefined) ? room.name === _id : false) !== undefined) return false
         this.room[this.length] = this.valRoom(_id)
         //this.room[this.length].player[this.room[this.length].total] = {id: playerId}
-        this.room[this.length].status = 0
+        this.room[this.length].status = 1
         this.room[this.length]._i = this.length
         this.length++
         return true
@@ -16,7 +16,7 @@ class Room{
     joinRoom(id, playerId, permit=1){
         const data = this.room
         const index = data.findIndex(room => (room !== undefined) ? room.name === id : false)
-        if(index == -1 || data[index].setting.players === data[index].total || data[index].status == 1) return this.message({msg:"Phòng không tồn tại hoặc đã không còn chỗ trống"})
+        if(index == -1 || data[index].setting.players === data[index].total || data[index].status != 1) return this.message({msg:`Phòng không tồn tại hoặc đã không còn chỗ trống`})
         data[index].player = [...data[index].player, {id: playerId, score: 0, a:[], permit: permit}]
         data[index].total++
         return this.message({sts:1})
