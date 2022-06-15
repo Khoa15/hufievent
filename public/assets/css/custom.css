@@ -330,7 +330,7 @@ input {
 }
 
 .form {
-  max-height: 190px;
+  height: 100%;
   background: #dae7e6;
   justify-content: center;
   flex-direction: row;
@@ -338,6 +338,11 @@ input {
   max-width: 0px;
   transition: .5s ease;
   overflow: hidden;
+}
+
+.form button, a{
+  opacity: 0;
+  transition: .2s ease;
 }
 
 .form form#next-step{
@@ -700,12 +705,18 @@ select{
 
 .triangle{
   display: flex;
+  height: 265px;
 }
 
 .triangle:hover .form{
   display: flex;
+  width: 210px;
   max-width: 210px;
   padding: 20px 35px 15px;
+}
+
+.triangle:hover .form button, a{
+  opacity: 1;
 }
 
 @keyframes setwidth{
@@ -720,9 +731,9 @@ select{
 
 .triangle::before{
   content: "";
-  border-left: 150px solid transparent;
   border-right: 0px solid transparent;
-  border-bottom: 230px solid #555;
+  border-left: 180px solid transparent;
+  border-bottom: 300px solid #555;
   border-image: url('../imgs/pyramid-left.png');
   /* animation: pyramid 4s linear infinite; */
 }
@@ -730,8 +741,8 @@ select{
 .triangle::after{
   content: "";
   border-left: 0px solid transparent;
-  border-right: 150px solid transparent;
-  border-bottom: 230px solid #555;
+  border-right: 180px solid transparent;
+  border-bottom: 300px solid #555;
   border-image: url('../imgs/pyramid-right.png');
   /* animation: pyramid 4s linear infinite; */
 }

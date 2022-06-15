@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="apb2mhhM5XiEL2hr2gBpQEQe0XsHW6OlHmIlLLKIJOU" />
+    <meta name="google-signin-client_id" content="330621606496-je8emkan6vlsk6bkrgmavst9h94ajsf7.apps.googleusercontent.com">
+    <meta name="description" content="Hufievent! Một chương trình game đơn giản cho mọi người.">
     <title>PPC</title>
     <link rel="stylesheet" href="./assets/css/custom.css">
 </head>
@@ -28,7 +30,18 @@
                     <div class="loading-bar hide">
                         <div class="loading"></div>
                     </div>
-                    <form class="" id="form-data" step="1">
+                    <form class="">
+                        <input type="text" placeholder="Username">
+                        <input type="email" placeholder="Email">
+                        <input type="password" placeholder="Enter password">
+                        <input type="password" placeholder="Re-Enter password">
+                        <!-- <div class="g-signin2" data-onsuccess="onSignIn"></div> -->
+                        <div class="grid">
+                            <button type="button" class="btn-a" id="back-form">&larr; Trở về</button>
+                            <button type="submit">Đăng Ký</button>
+                        </div>
+                    </form>
+                    <form class="hide" style="text-align: center" id="form-data" step="1">
                         <input type="text" id="id-room" placeholder="Nhập mã phòng" autofocus autocomplete="off" required>
                         <div class="space-btn">
                             <button type="submit" class="bg-success" id="btn-join">Tham Gia</button>
@@ -36,6 +49,7 @@
                         <div class="space-btn">
                             <button type="button" id="btn-create-room" >Tạo phòng</button>
                         </div>
+                        <a href="javascript:;" class="btn-a" id="btn-sign-in">Đăng nhập</a>
                     </form>
                     <form class="hide" id="next-step" box-setting-room-player step="2">
                         <h1 class="id-room text-center" room-name="true"></h1>
@@ -170,6 +184,7 @@
         </div>
     </div>
     
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/howler@2.2.3/dist/howler.min.js"></script>
     <!-- <script src="./assets/js/game.js"></script> -->
     <script src="/socket.io/socket.io.js"></script>

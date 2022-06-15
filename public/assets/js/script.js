@@ -1,4 +1,4 @@
-const $ = document.querySelector.bind(document)
+ const $ = document.querySelector.bind(document)
 const $$ = document.querySelectorAll.bind(document)
 const socket = io();
 
@@ -126,7 +126,7 @@ function gameStarted(time=roomClient.setting.time){
     html_question.innerHTML = `Câu ${round+1}: ${questions.q}`
     $('#timeline').style.animationDuration = time+'s'
     for (let i = 0; i < questions.a.length; i++) {
-        boxAns[i].innerHTML = `${String.fromCharCode(i+65)}: ${questions.a[i]}`;
+        boxAns[i].innerHTML = `${String.fromCharCode(i+65)}. ${questions.a[i]}`;
         $$('.box-main')[i].classList.remove('active')
     }
     const timeOut = setTimeout(()=>{
@@ -400,3 +400,17 @@ $('#btn-play-again').addEventListener('click', ()=>{
     $('.triangle').style.display = 'flex'
     $('.control-panel').classList.add('hide')
 })
+
+
+// Signin
+$('#btn-sign-in').addEventListener('click', ()=>{
+
+})
+
+function onSignIn(googleUser) {
+    var profile = googleUser.getBasicProfile();
+    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+    console.log('Name: ' + profile.getName());
+    console.log('Image URL: ' + profile.getImageUrl());
+    console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+  }

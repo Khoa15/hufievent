@@ -53,7 +53,7 @@ io.on('connection', (socket)=>{
             fetch(`${process.env.SERVER}/api/data/?limit=${formData['limit-questions']}&topic=${formData['topic']}`,{method: 'get'}).then(response => response.json()).then(data =>{
                 game.setRoom(_i, formData)
                 game.createQuestion(_i, data.data)
-                if(game.virtualBot(3)){
+                if(game.virtualBot(99)){
                     io.to(game.room[_i].name).emit('updateState', game.room[_i])
                 }
             })
@@ -93,7 +93,9 @@ io.on('connection', (socket)=>{
     })
 
     socket.on('resetGame', (_index)=>{
-        delete game.room[_index];
+        const idRoom = game.getOutRoom(socket.id)
+        const data = game.getInfo(idRoom)
+        io.to(idRoom).emit('updateState', data)
     })
 
     socket.on('disconnect', ()=>{
@@ -129,3 +131,4 @@ function makeRoom(){
 
     return newString
 }
+
