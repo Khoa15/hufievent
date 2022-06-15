@@ -1,4 +1,4 @@
- const $ = document.querySelector.bind(document)
+const $ = document.querySelector.bind(document)
 const $$ = document.querySelectorAll.bind(document)
 const socket = io();
 
@@ -403,9 +403,20 @@ $('#btn-play-again').addEventListener('click', ()=>{
 
 
 // Signin
-$('#btn-sign-in').addEventListener('click', ()=>{
+let click_out_modal = false
+$('[type-model="modal"][target]').addEventListener('click', function(e){
+    e.preventDefault()
+    click_out_modal = true
+    var target = this.getAttribute('target')
+    $(`${target}[type-model="modal"]`).classList.remove('hide')
+    
 
 })
+window.onclick = function(e){
+    if(e.target.classList == 'modal'){
+        e.target.classList.add('hide')
+    }
+}
 
 function onSignIn(googleUser) {
     var profile = googleUser.getBasicProfile();

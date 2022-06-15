@@ -549,6 +549,7 @@ button:focus {
   display: flex;
   flex-direction: row;
   width: 100%;
+  margin-bottom: 10px;
 }
 
 select{
@@ -778,6 +779,71 @@ select{
   display: flex;
   justify-content: center;
 }
+
+.modal{
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  height: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: .5s ease;
+  animation: modal 0.5s linear;
+}
+
+@keyframes modal {
+  0%{
+    top: -100px;
+    opacity: 0;
+  }
+  100%{
+    top: 0px;
+    opacity: 1;
+  }
+}
+
+.modal-main{
+  position: relative;
+  display: inline-block;
+  max-width: 1050px;
+  max-height: 500px;
+  overflow-y: auto;
+  background-color: #ededed;
+  border-radius: 10px;
+}
+
+.modal-main,.bg-success .modal-head,.modal-foot{
+  background-color: transparent;
+}
+
+.modal-head, .modal-body, .modal-foot{
+  background-color: #dedede;
+  padding: 15px;
+}
+
+.modal-head{
+  font-size: 18pt;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.modal-body{
+  background-color: transparent;
+}
+
+.modal-foot{
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+/* @media(max-width: 500px){
+  .modal-main{
+    max-width: 450px;
+  }
+} */
+
 .hide {
   display: none !important;
+  transition: .5s ease;
 }
