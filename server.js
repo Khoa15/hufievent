@@ -10,6 +10,7 @@ const server = http.createServer(app)
 const { Server } = require('socket.io')
 const io = new Server(server)
 const port = process.env.PORT || 5050
+const jwt = require('jsonwebtoken')
 
 db.connect()
 app.use(cors({
@@ -21,12 +22,23 @@ app.set('views', './public')
 app.set('view engine', 'ejs')
 
 const homeRoute = require('./routes/homeRoute')
+const adminRoute = require('./routes/adminRoute')
 const dataRoute = require('./routes/dataRoute')
 
 app.use('/', homeRoute)
+app.use('/admin', adminRoute)
 app.use('/api/data', dataRoute)
 io.on('connection', (socket)=>{
     console.log(`A user connected`)
+    socket.on('SignIn', (profile)=>{
+        let user = {'lastname': profile['LX'], 'firstname': profile['xZ'], 'email': profile['gw'], 'image': profile['vO']}
+        jwt.sign(user, process.env.KEY_SECRET, function(err, token){
+            if(err == null){
+                socket.emit('response', ({access_token: token}))
+
+            }
+        });
+    })
     socket.on('joinRoom', (name)=>{
         const result = game.joinRoom(name, socket.id)
         if(result.sts){

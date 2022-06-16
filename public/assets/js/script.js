@@ -1,7 +1,7 @@
 const $ = document.querySelector.bind(document)
 const $$ = document.querySelectorAll.bind(document)
 const socket = io();
-
+const _token = localStorage.getItem('access_token')
 
 const btnJoin = $('#btn-join');
 const btnCreRoom = $('#btn-create-room');
@@ -357,6 +357,9 @@ socket.on('updateState', (room)=>{
         if(socket.id === roomClient.player[0].id) $('#total-user').innerHTML = (`0${roomClient.total}`).slice(-2)
     }
 })
+socket.on('response', (result)=>{
+    localStorage.setItem('access_token', `Bearer ${result.access_token}`)
+})
 // ./End Socket
 
 //show notification
@@ -403,25 +406,54 @@ $('#btn-play-again').addEventListener('click', ()=>{
 
 
 // Signin
-let click_out_modal = false
-$('[type-model="modal"][target]').addEventListener('click', function(e){
-    e.preventDefault()
-    click_out_modal = true
-    var target = this.getAttribute('target')
-    $(`${target}[type-model="modal"]`).classList.remove('hide')
-    
-
+if(_token !== null){
+    $('#btn-sign-in').classList.add('hide')
+}
+$$('[type-model="modal"][target]').forEach(function(modal){
+    modal.addEventListener('click', function(e){
+        e.preventDefault()
+        var target = this.getAttribute('target')
+        $(`${target}[type-model="modal"]`).classList.remove('hide')
+    })
 })
+$$('[type-model="tab"][target]').forEach(function(tab){
+    tab.addEventListener('click', function(e){
+        e.preventDefault()
+        var target = this.getAttribute('target')
+        $$('.tab').forEach(function(tab){
+            if(tab.classList.contains('hide') == false){
+                tab.classList.add('hide')
+                return false;
+            }
+        })
+        toggTab(target)
+        return false;
+    })
+})
+function toggTab(target){
+    let tab = $(target).classList
+    if(tab.contains('hide')){
+        tab.remove('hide')
+        return false
+    }
+    tab.add('hide')
+}
 window.onclick = function(e){
     if(e.target.classList == 'modal'){
         e.target.classList.add('hide')
     }
 }
 
+$('#user-signout').addEventListener('click', (e)=>{
+    e.preventDefault()
+    localStorage.removeItem('access_token')
+    window.location.reload()
+})
+
 function onSignIn(googleUser) {
     var profile = googleUser.getBasicProfile();
-    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-    console.log('Name: ' + profile.getName());
-    console.log('Image URL: ' + profile.getImageUrl());
-    console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-  }
+    socket.emit('SignIn', profile)
+}
+function SignOut(User){
+    gapi.auth2.getAuthInstance().disconnect();
+}

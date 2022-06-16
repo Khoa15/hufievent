@@ -18,31 +18,62 @@
             <div class="mountains">123</div>
             <div class="sand">123</div>
         </div> -->
+        <div class="menu user fixed">
+            <div class="container">
+                <div class="welcome-user">
+                    <div class="box-user">
+                        <p>Chào: <strong id="username">Akomaneol</strong></p>
+                        <ul class="panel">
+                            <li>
+                                <a href="/admin">Admin</a>
+                            </li>
+                            <li>
+                                <a href="/user" id="user-setting">Cài đặt</a>
+                            </li>
+                            <li>
+                                <a href="javascript:;" id="user-signout">Đăng xuất</a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="notification hide">
             <div class="notify">
                 Không thể đăng nhập vào phòng này
             </div>
         </div>
         <div class="modal hide" type-model="modal" id="sign-in">
-            <div class="modal-main bg-success">
+            <div class="modal-main bg-success modal-sm">
                 <div class="modal-head">Đăng Nhập</div>
                 <div class="modal-body">
                     <form>
-                        <!-- <div class="tab">
-                            <div class="tab-list">
-                                <div class="tab-items"></div>
-                                <div class="tab-items"></div>
-                                <div class="tab-items"></div>
+                        <div class="tab tab-signin">
+                            <input type="email" placeholder="Nhập email...">
+                            <input type="password" placeholder="Nhập mật khẩu...">
+                            <button>Đăng Nhập</button>
+                            <div class="grid">
+                                <button href="javascript:;" class="btn-a" id="btn-o-signup" type-model="tab" target=".tab-signup">Tạo tài khoản.</button>
+                                <button href="javascript:;" class="btn-a" id="btn-forgot" type-model="tab" target=".tab-forgot">Quên mật khẩu?</button>
                             </div>
                         </div>
-                        <div class="tab-content">
-                        </div> -->
-                        <input type="email" placeholder="Nhập email...">
-                        <input type="password" placeholder="Nhập mật khẩu...">
-                        <button>Đăng Nhập</button>
-                        <div class="grid">
-                            <button href="javascript:;" class="btn-a">Tạo tài khoản</button>
-                            <button href="javascript:;" class="btn-a">Quên mật khẩu?</button>
+                        <div class="tab tab-signup hide">
+                            <input type="text" placeholder="Nhập tên tài khoản...">
+                            <input type="email" placeholder="Nhập email...">
+                            <input type="password" placeholder="Nhập mật khẩu...">
+                            <button>Đăng ký</button>
+                            <div class="grid">
+                                <button href="javascript:;" class="btn-a" id="btn-o-signin" type-model="tab" target=".tab-signin">Có tài khoản? Đăng nhập.</button>
+                            </div>
+                        </div>
+                        <div class="tab tab-forgot hide">
+                            <p>Nhập email và sau đó chúng tôi sẽ gởi email cho các bạn.</p>
+                            <input type="email" placeholder="Nhập email...">
+                            <button>Gởi</button>
+                            <div class="grid">
+                                <button href="javascript:;" class="btn-a" id="btn-o-signin" type-model="tab" target=".tab-signin">Có tài khoản? Đăng nhập.</button>
+                            </div>
                         </div>
                         <center>
                             <div class="g-signin2" data-onsuccess="onSignIn"></div>
@@ -59,18 +90,6 @@
                     <div class="loading-bar hide">
                         <div class="loading"></div>
                     </div>
-                    <form class="hide">
-                        <!-- <input type="text" placeholder="Username">
-                        <input type="email" placeholder="Email">
-                        <input type="password" placeholder="Enter password">
-                        <input type="password" placeholder="Re-Enter password"> -->
-
-                        <div class="g-signin2" data-onsuccess="onSignIn"></div>
-                        <!-- <div class="grid">
-                            <button type="button" class="btn-a" id="back-form">&larr; Trở về</button>
-                            <button type="submit">Đăng Ký</button>
-                        </div> -->
-                    </form>
                     <form class="" style="text-align: center" id="form-data" step="1">
                         <input type="text" id="id-room" placeholder="Nhập mã phòng" autofocus autocomplete="off" required>
                         <div class="space-btn">

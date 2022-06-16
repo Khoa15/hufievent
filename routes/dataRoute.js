@@ -22,4 +22,6 @@ Router.get('/', async function getData(req, res){
     }
 })
 
+
+
 module.exports = Router
