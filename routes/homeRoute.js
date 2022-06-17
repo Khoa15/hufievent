@@ -9,9 +9,8 @@ Router.get('/home', (req, res)=>{
     res.render('index2')
 })
 
-
-Router.get('/user', (req, res)=>{
-    res.render('user')
+Router.get('/:page', (req, res)=>{
+    res.render(req.params.page)
 })
 
 module.exports = Router

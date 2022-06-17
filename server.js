@@ -23,11 +23,14 @@ app.set('view engine', 'ejs')
 
 const homeRoute = require('./routes/homeRoute')
 const adminRoute = require('./routes/adminRoute')
-const dataRoute = require('./routes/dataRoute')
+const apiRoute = require('./routes/apiRoute')
+const { handleError } = require('./middlewares/HandleError')
 
 app.use('/', homeRoute)
 app.use('/admin', adminRoute)
-app.use('/api/data', dataRoute)
+app.use('/api', apiRoute)
+app.use(handleError)
+
 io.on('connection', (socket)=>{
     console.log(`A user connected`)
     socket.on('SignIn', (profile)=>{

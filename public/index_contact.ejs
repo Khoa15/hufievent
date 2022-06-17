@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Trường Đại học Công nghiệp Thực phẩm TP. Hồ Chí Minh</title>
+    <%- include('../partials/user/linkAssets') -%>
+
+    <style>
+        table td {
+            padding: 5px 10px;
+        }
+        
+        input,
+        textarea,
+        select {
+            border: solid 1px #ddd;
+            padding: 5px 20px;
+            width: 100%;
+        }
+        
+        select {
+            width: 180px;
+        }
+        
+        input[type="submit"] {
+            width: auto;
+            background: red;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('../partials/user/header') -%>
+
+    <div class="offers">
+        <div class="offers__container">
+            <div class="grid wide">
+
+                <div class="row offers__container__items">
+                    <div class="col-l-6">
+                        <h1 class="article-title"></h1>
+                        <div class="post-content">
+                            <div class="post-summary-header">
+                                <!-- start body hisotry -->
+                                <ul class="post-data col-left" itemprop="datePublished">
+                                    <li>
+                                        <p><i class="fa fa-calendar "> &nbsp;<span id="datenow"></span></i>
+                                            <i class="ti-arrow-right"> &nbsp;</i>Xin mời bạn nhập thông tin</p>
+
+                                    </li>
+
+
+                                </ul>
+                                <div class="post-body not-copy content_bold">
+                                    <div class="contact__container__form">
+                                        <div class="contact__container__form--title">
+                                            <h2>thông tin</h2>
+                                        </div>
+                                        <div class="contact__form">
+                                            <input type="text" placeholder="Họ Và Tên" class="contact_form_name">
+                                            <input type="text" placeholder="E-mail" class="contact_form_email">
+                                            <input type="text" placeholder="SDT" class="contact_form_subject">
+                                            <input type="text" placeholder="Lớp" class="contact_form_subject">
+                                            <textarea name="" id="" cols="30" rows="10" placeholder="Địa chỉ"></textarea>
+                                            <button class="form_submit_button">
+                                            Gửi<span></span><span></span><span></span>
+                                          </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="posts-relate-content">
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-3 menu_right">
+                        <div class="sticky" style>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('../partials/user/footer') -%>
+    <script src="./assets/js/date.js"></script>
+</body>
+
+</html>
