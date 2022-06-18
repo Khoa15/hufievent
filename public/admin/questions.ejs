@@ -14,10 +14,18 @@
                     <div class="table-responsive">
                         <table>
                             <thead>
-                                <th>ID</th>
-                                <th>CÂU HỎI</th>
-                                <th>CHỦ ĐỀ</th>
-                                <th></th>
+                                <tr>
+                                    <th colspan="4">
+                                        Bộ câu hỏi
+                                        <button class="btn bg-warning">Tạo câu hỏi</button>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>CÂU HỎI</th>
+                                    <th>CHỦ ĐỀ</th>
+                                    <th></th>
+                                </tr>
                             </thead>
                             <tbody>
                                 
@@ -63,8 +71,8 @@
                             <button class="btn btn-rounded btn-outlined bg-success" onclick="view('${question._id}', 'q')">
                                 <i class="bi bi-info"></i>
                             </button>
-                            <button class="btn btn-rounded btn-outlined bg-warning">
-                                <i class="bi bi-eye"></i>
+                            <button class="btn ${question.published === 0 ? '' :'btn-outlined'} btn-rounded  bg-warning">
+                                <i class="bi bi-eye${question.published === 0 ? '-slash' :''}"></i>
                             </button>
                             <button class="btn btn-rounded btn-outlined bg-danger">
                                 <i class="bi bi-trash3"></i>

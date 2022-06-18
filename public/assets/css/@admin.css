@@ -292,9 +292,8 @@ td{
 .modal-head{
     border-bottom: 1px solid rgb(37, 37, 37);
     font-size: 21px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
     overflow: hidden;
+    text-transform: capitalize;
 }
 
 .modal-body{
@@ -308,6 +307,13 @@ td{
     overflow: hidden;
 }
 
+.answer{
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    word-spacing: 0.7px;
+    margin-top: 10px;
+    margin: 10px;
+}
 
 .hide{
     display: none;

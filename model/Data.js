@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const data = new mongoose.Schema({
+const Question = new mongoose.Schema({
     q: {
         type: String,
         trim: true,
@@ -29,4 +29,4 @@ const data = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('question', data)
+module.exports = mongoose.model('Question', Question)
