@@ -1,19 +1,34 @@
-$('[type-model="modal"]').on('click', function(e){
-    console.log('Clicked')
-    toggleModal(this.attr('target'))
+$('.modal').on('click', function(e){
+    console.log(e.target.className)
+    if(e.target.classList.contains("modal")){
+        toggleModal()
+
+    }
 })
 
-function toggleModal(e){
-    const modal = $('.modal').classList
-    if(modal.contain('hide')){
-        modal.remove('hide')
-        return false;
+function view(_id, type){
+
+    switch(type){
+        case 'q':
+
+            toggleModal()
+            break;
     }
-    modal.add('hide')
 }
 
-window.addEventListener('click', function(e){
-    if(e.target.className === "modal"){
-        e.target.classList.add('hide')
-    }
-})
+function fetchData(data=[],Authorization='',method='get', model='user'){
+    axios({
+        method: 'get',
+        url: '/api/user',
+        headers:{
+            Authorization: Authorization
+        },
+        data: data,
+    }).then(res=>{
+        return res.result
+    })
+}
+
+function toggleModal(e){
+    $('.modal').toggle('hide')
+}
