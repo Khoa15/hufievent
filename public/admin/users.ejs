@@ -3,7 +3,7 @@
 <head>
     <%- include('../../partials/admin/templates/header')-%>
 </head>
-<body>
+<body onload="getAllUsers()">
     <div class="main">
         <div class="container">
             <div class="row">
@@ -11,23 +11,76 @@
                     <%- include('../../partials/admin/templates/navbar')-%>
                 </div>
                 <div class="col-5">
-                    <table>
-                        <thead>
-                            <th>ID</th>
-                            <th>TÊN</th>
-                            <th>AVATAR</th>
-                            <th>LEVEL</th>
-                            <th></th>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <th>ID</th>
+                                <th>TÊN</th>
+                                <th>AVATAR</th>
+                                <th>LEVEL</th>
+                                <th></th>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4">
+
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <%- include('../../partials/admin/templates/footer') -%>
+    <script>
+        var users = [], pagi = new Pagination()
+        function getAllUsers(){
+            axios({
+                method: 'get',
+                url: '/api/user',
+                Authorication: `Bearer `
+            }).then(res=>{
+                users = res.data.result
+                pagi.init(users, 0, 7)
+                changePage(0)
+            })
+        }
+        const printListUsers = (users)=>{
+            $('tbody').html('')
+            users.forEach(user=>{
+                $('tbody').append(`
+                        <tr>
+                            <td>${user._id}</td>
+                            <td>${user.name}</td>
+                            <td>${user.email}</td>
+                            <td></td>
+                            <td>
+                                <button class="btn btn-rounded btn-outlined bg-warning">
+                                    <i class="bi bi-info"></i>
+                                </button>
+                                <button class="btn btn-rounded btn-outlined bg-warning">
+                                    <i class="bi bi-person-dash-fill"></i>    
+                                </button>
+                                <button class="btn btn-rounded btn-outlined bg-danger">
+                                    <i class="bi bi-person-x-fill"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `)
+            })
+        }
+        const changePage = (i)=>{
+            pagi.changePage(i)
+            printListUsers(pagi.dataPage())
+            printPagination(pagi.makePagination())
+        }
+        const printPagination = (html)=>{
+            $('tfoot tr td').html(html)
+        }
+    </script>
 </body>
 </html>

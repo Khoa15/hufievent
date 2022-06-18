@@ -3,9 +3,6 @@ const User = require('../model/User')
 
 exports.getAllUsers = async(req, res, next)=>{
     try{
-        if(req.params.page != 'users'){
-            return false;
-        }
         const users = await User.find({}).select('name email').exec()
         res.json({
             success: true,

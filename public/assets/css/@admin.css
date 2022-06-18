@@ -3,7 +3,7 @@
 
 body{
     font-family: 'Arial';
-    font-size: 14px;
+    font-size: 15px;
     background-color:#dff9fb;
 }
 
@@ -249,6 +249,68 @@ td{
     white-space: nowrap;
     overflow: hidden;
     max-width: 300px;
+}
+
+@media (min-width: 200px){
+    .modal-content{
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+    .modal-head{
+        font-size: 18px;
+        padding: 15px 20px 15px 20px;
+    }
+    .modal-body{
+        max-height: 500px;
+    }
+}
+
+.modal{
+    position: fixed;
+    top: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(235, 235, 235, 0.5);
+}
+
+
+.modal-content{
+    max-width: 1050px;
+    max-height: 900px;
+    margin-top: 5rem;
+    margin-right: auto;
+    margin-left: auto;
+    box-shadow: 0px 0px 5px 0px #000;
+    background-color: rgb(245, 244, 244);
+}
+
+.modal-head, .modal-body, .modal-foot{
+    padding: 20px;
+}
+
+.modal-head{
+    border-bottom: 1px solid rgb(37, 37, 37);
+    font-size: 21px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.modal-body{
+    overflow-y: auto;
+}
+
+.modal-foot{
+    border-top: 1px solid rgb(37, 37, 37);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+
+.hide{
+    display: none;
 }
 
 /*./Components*/

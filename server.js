@@ -1,16 +1,17 @@
 require('dotenv').config()
 const express = require('express')
+const next = require('next')
 const http = require('http')
 const db = require('./config/connect')
 const game = require('./public/assets/js/game')
 const cors = require('cors')
-const app = express()
 const fetch = require('node-fetch')
-const server = http.createServer(app)
 const { Server } = require('socket.io')
+const jwt = require('jsonwebtoken')
+const app = express()
+const server = http.createServer(app)
 const io = new Server(server)
 const port = process.env.PORT || 5050
-const jwt = require('jsonwebtoken')
 
 db.connect()
 app.use(cors({
@@ -26,10 +27,15 @@ const adminRoute = require('./routes/adminRoute')
 const apiRoute = require('./routes/apiRoute')
 const { handleError } = require('./middlewares/HandleError')
 
-app.use('/', homeRoute)
-app.use('/admin', adminRoute)
 app.use('/api', apiRoute)
+app.use('/admin', adminRoute)
+app.use('/', homeRoute)
 app.use(handleError)
+
+server.listen(port, ()=>{
+    console.log(`Listenning on ${port}`)
+})
+
 
 io.on('connection', (socket)=>{
     console.log(`A user connected`)
@@ -118,10 +124,6 @@ io.on('connection', (socket)=>{
         const data = game.getInfo(idRoom)
         io.to(idRoom).emit('updateState', data)
     })
-})
-
-server.listen(port, ()=>{
-    console.log(`Listenning on ${port}`)
 })
 
 function makeRoom(){

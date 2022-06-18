@@ -3,7 +3,7 @@
 <head>
     <%- include('../../partials/admin/templates/header')-%>
 </head>
-<body>
+<body onload="getAllQuestions()">
     <div class="main">
         <div class="container">
             <div class="row">
@@ -15,36 +15,74 @@
                         <table>
                             <thead>
                                 <th>ID</th>
-                                <th>TÊN</th>
+                                <th>CÂU HỎI</th>
                                 <th>CHỦ ĐỀ</th>
                                 <th></th>
                             </thead>
                             <tbody>
+                                
+                            </tbody>
+                            <tfoot>
                                 <tr>
-                                    <td>1</td>
-                                    <td>Khoa</td>
-                                    <td>
-                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-rounded btn-outlined bg-success">
-                                            <i class="bi bi-info"></i>
-                                        </button>
-                                        <button class="btn btn-rounded btn-outlined bg-warning">
-                                            <i class="bi bi-eye"></i>
-                                        </button>
-                                        <button class="btn btn-rounded btn-outlined bg-danger">
-                                            <i class="bi bi-trash3"></i>
-                                        </button>
+                                    <td colspan="4">
                                     </td>
                                 </tr>
-                            </tbody>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
+    <%- include('../../partials/admin/templates/modal')-%>
+    <%- include('../../partials/admin/templates/footer') -%>
+    <script>
+        var questions = [], pagi = new Pagination()
+        const getAllQuestions = ()=>{
+            axios({
+                method: 'get',
+                url: '/api/question',
+                Authorization: ``,
+            }).then(res => {
+                questions = res.data.result
+                pagi.init(questions, 0, 10)
+                changePage(0)
+            })
+        }
+        const printListQuestion = (questions) => {
+            $('tbody').html('')
+            questions.forEach(question => {
+                    $('tbody').append(`
+                    <tr>
+                        <td>${question._id}</td>
+                        <td>${question.q}</td>
+                        <td>
+                            ${question.topic}
+                        </td>
+                        <td>
+                            <button class="btn btn-rounded btn-outlined bg-success" type-model="modal">
+                                <i class="bi bi-info"></i>
+                            </button>
+                            <button class="btn btn-rounded btn-outlined bg-warning">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                            <button class="btn btn-rounded btn-outlined bg-danger">
+                                <i class="bi bi-trash3"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    `)
+                });
+        }
+        const changePage = (i) => {
+            pagi.changePage(i)
+            printListQuestion(pagi.dataPage())
+            printPagination(pagi.makePagination())
+        }
+        const printPagination = (html)=>{
+            $('tfoot tr td').html(html)
+        }
+    </script>
+    <script src="/assets/js/modal.js"></script>
 </body>
 </html>
