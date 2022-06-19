@@ -8,17 +8,16 @@ const cors = require('cors')
 const fetch = require('node-fetch')
 const { Server } = require('socket.io')
 const jwt = require('jsonwebtoken')
+const bodyParser = require('body-parser')
 const app = express()
 const server = http.createServer(app)
 const io = new Server(server)
 const port = process.env.PORT || 5050
-
 db.connect()
 app.use(cors({
     origin: process.env.SERVER
 }))
 app.use(express.static('public'))
-
 app.set('views', './public')
 app.set('view engine', 'ejs')
 
@@ -27,6 +26,7 @@ const adminRoute = require('./routes/adminRoute')
 const apiRoute = require('./routes/apiRoute')
 const { handleError } = require('./middlewares/HandleError')
 
+app.use(bodyParser.json())
 app.use('/api', apiRoute)
 app.use('/admin', adminRoute)
 app.use('/', homeRoute)

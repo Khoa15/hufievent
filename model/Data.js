@@ -27,6 +27,6 @@ const Question = new mongoose.Schema({
         max: 1,
         default: 1
     }
-})
+}, {timestamps: true})
 
 module.exports = mongoose.model('Question', Question)

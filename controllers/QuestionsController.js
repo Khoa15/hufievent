@@ -1,8 +1,9 @@
 const Question = require("../model/Data")
 
 exports.getAllQuestions = async(req, res, next)=>{
+    console.log(req.body)
     try {
-        const questions = await Question.find({}).exec()
+        const questions = await Question.find({}).sort({id: -1}).exec()
         res.json({
             success: true,
             result: questions
@@ -15,7 +16,6 @@ exports.getAllQuestions = async(req, res, next)=>{
 exports.getSomeQuestions = async(req, res, next)=>{
     try {
         const { limit, topic } = req.query
-        console.log(limit, topic)
         let count = await Question.count()
         count = Math.floor((Math.random() * count) + Number(limit))
         let filter = (topic && topic !== "-1") ? {topic: Number(topic)} : {}
@@ -33,6 +33,18 @@ exports.getSomeQuestions = async(req, res, next)=>{
 exports.getQuestion = async(req, res, next)=>{
     try {
         const question = await Question.findById(req.params.id)
+        res.json({
+            success: true,
+            result: question
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
+exports.createQuestion = async (req, res, next)=>{
+    try {
+        const question = await Question.create(req.params)
         res.json({
             success: true,
             result: question
