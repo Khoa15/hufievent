@@ -1,7 +1,6 @@
 const Question = require("../model/Data")
 
 exports.getAllQuestions = async(req, res, next)=>{
-    console.log(req.body)
     try {
         const questions = await Question.find({}).sort({id: -1}).exec()
         res.json({
@@ -32,7 +31,7 @@ exports.getSomeQuestions = async(req, res, next)=>{
 
 exports.getQuestion = async(req, res, next)=>{
     try {
-        const question = await Question.findById(req.params.id)
+        const question = await Question.findOne({_id: req.params._id})
         res.json({
             success: true,
             result: question
@@ -44,7 +43,31 @@ exports.getQuestion = async(req, res, next)=>{
 
 exports.createQuestion = async (req, res, next)=>{
     try {
-        const question = await Question.create(req.params)
+        const question = await Question.create(req.body)
+        res.json({
+            success: true,
+            result: question
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
+exports.deleteQuestion = async(req, res, next)=>{
+    try {
+        const question = await Question.deleteOne(req.body)
+        res.json({
+            success: true,
+            result: question
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
+exports.updateQuestion = async(req, res, next)=>{
+    try {
+        const question = await Question.updateOne({id: res.body.id}, res.body)
         res.json({
             success: true,
             result: question

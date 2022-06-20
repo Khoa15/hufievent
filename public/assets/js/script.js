@@ -447,6 +447,10 @@ window.onclick = function(e){
 $('#user-signout').addEventListener('click', (e)=>{
     e.preventDefault()
     localStorage.removeItem('access_token')
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
     window.location.reload()
 })
 
@@ -454,6 +458,32 @@ function onSignIn(googleUser) {
     var profile = googleUser.getBasicProfile();
     socket.emit('SignIn', profile)
 }
-function SignOut(User){
-    gapi.auth2.getAuthInstance().disconnect();
+$('#frmSignin').addEventListener('submit', function(e){
+    e.preventDefault()
+    var dataForm = new FormData($('#frmSignin'))
+    var data = [...dataForm.entries()]
+    console.log(data)
+    var request = new XMLHttpRequest();
+    request.open("POST", "/api/user");
+    request.send(dataForm);
+})
+$('#frmSignup').addEventListener('submit', function(e){
+    e.preventDefault()
+    var dataForm = new FormData($('#frmSignup'))
+    var data = [...dataForm.entries()]
+    console.log(data)
+    var request = new XMLHttpRequest();
+    request.open("POST", "/api/user");
+    request.send(dataForm);
+})
+
+function fetch({
+    url, data, method
+}){
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function(){
+        console.log(this.responseText)
+    }
+    request.open(method, url)
+    request.send(data)
 }

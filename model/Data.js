@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 
 const Question = new mongoose.Schema({
+    id:{
+        type: Number,
+        default: Date.now()
+    },
     q: {
         type: String,
         trim: true,
@@ -28,5 +32,11 @@ const Question = new mongoose.Schema({
         default: 1
     }
 }, {timestamps: true})
+
+Question.pre('save', async function(next){
+    let question = this
+    this.id = Date.now()
+    next()
+})
 
 module.exports = mongoose.model('Question', Question)

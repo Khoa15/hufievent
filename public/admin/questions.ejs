@@ -3,7 +3,7 @@
 <head>
     <%- include('../../partials/admin/templates/header')-%>
 </head>
-<body onload="getAllQuestions()">
+<body onload="process('q', 'list')">
     <div class="main">
         <div class="container">
             <div class="row">
@@ -17,7 +17,7 @@
                                 <tr>
                                     <th colspan="4">
                                         Bộ câu hỏi
-                                        <button class="btn bg-warning"  onclick="create('q')">Tạo câu hỏi</button>
+                                        <button class="btn bg-warning"  onclick="process('q', 'create')">Tạo câu hỏi</button>
                                     </th>
                                 </tr>
                                 <tr>
@@ -44,54 +44,6 @@
     </div>
     <%- include('../../partials/admin/templates/modal')-%>
     <%- include('../../partials/admin/templates/footer') -%>
-    <script>
-        var questions = [], pagi = new Pagination()
-        const getAllQuestions = ()=>{
-            axios({
-                method: 'get',
-                url: '/api/question',
-                Authorization: ``,
-            }).then(res => {
-                questions = res.data.result
-                pagi.init(questions, 0, 10)
-                changePage(0)
-            })
-        }
-        const printListQuestion = (questions) => {
-            $('tbody').html('')
-            questions.forEach(question => printQuestion(question));
-        }
-        const printQuestion = (question)=>{
-            $('tbody').append(`
-                    <tr>
-                        <td>${question._id}</td>
-                        <td>${question.q}</td>
-                        <td>
-                            ${question.topic}
-                        </td>
-                        <td>
-                            <button class="btn btn-rounded btn-outlined bg-success" onclick="view('${question._id}', 'q')">
-                                <i class="bi bi-info"></i>
-                            </button>
-                            <button class="btn ${question.published === 0 ? '' :'btn-outlined'} btn-rounded  bg-warning">
-                                <i class="bi bi-eye${question.published === 0 ? '-slash' :''}"></i>
-                            </button>
-                            <button class="btn btn-rounded btn-outlined bg-danger" onclick="deleteRow('${question._id}')">
-                                <i class="bi bi-trash3"></i>
-                            </button>
-                        </td>
-                    </tr>
-            `)
-        }
-        const changePage = (i) => {
-            pagi.changePage(i)
-            printListQuestion(pagi.dataPage())
-            printPagination(pagi.makePagination())
-        }
-        const printPagination = (html)=>{
-            $('tfoot tr td').html(html)
-        }
-    </script>
     <script src="/assets/js/modal.js"></script>
 </body>
 </html>

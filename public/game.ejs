@@ -48,37 +48,35 @@
             <div class="modal-main bg-success modal-sm">
                 <div class="modal-head">Đăng Nhập</div>
                 <div class="modal-body">
-                    <form>
-                        <div class="tab tab-signin">
-                            <input type="email" placeholder="Nhập email...">
-                            <input type="password" placeholder="Nhập mật khẩu...">
-                            <button>Đăng Nhập</button>
+                        <form class="tab tab-signin" id="frmSignin">
+                            <input type="email" name="email" placeholder="Nhập email...">
+                            <input type="password" name="password" placeholder="Nhập mật khẩu...">
+                            <button type="submit">Đăng Nhập</button>
                             <div class="grid">
                                 <button href="javascript:;" class="btn-a" id="btn-o-signup" type-model="tab" target=".tab-signup">Tạo tài khoản.</button>
                                 <button href="javascript:;" class="btn-a" id="btn-forgot" type-model="tab" target=".tab-forgot">Quên mật khẩu?</button>
                             </div>
-                        </div>
-                        <div class="tab tab-signup hide">
-                            <input type="text" placeholder="Nhập tên tài khoản...">
-                            <input type="email" placeholder="Nhập email...">
-                            <input type="password" placeholder="Nhập mật khẩu...">
-                            <button>Đăng ký</button>
+                        </form>
+                        <form class="tab tab-signup hide" id="frmSignup">
+                            <input type="text" name="username" placeholder="Nhập tên tài khoản...">
+                            <input type="email" name="email" placeholder="Nhập email...">
+                            <input type="password" name="password" placeholder="Nhập mật khẩu...">
+                            <button type="submit">Đăng ký</button>
                             <div class="grid">
                                 <button href="javascript:;" class="btn-a" id="btn-o-signin" type-model="tab" target=".tab-signin">Có tài khoản? Đăng nhập.</button>
                             </div>
-                        </div>
-                        <div class="tab tab-forgot hide">
+                        </form>
+                        <form class="tab tab-forgot hide">
                             <p>Nhập email và sau đó chúng tôi sẽ gởi email cho các bạn.</p>
                             <input type="email" placeholder="Nhập email...">
                             <button>Gởi</button>
                             <div class="grid">
                                 <button href="javascript:;" class="btn-a" id="btn-o-signin" type-model="tab" target=".tab-signin">Có tài khoản? Đăng nhập.</button>
                             </div>
-                        </div>
+                        </form>
                         <center>
                             <div class="g-signin2" data-onsuccess="onSignIn"></div>
                         </center>
-                    </form>
                 </div>
                 <!-- <div class="modal-foot">Modal foot</div> -->
             </div>
@@ -235,6 +233,6 @@
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/howler@2.2.3/dist/howler.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="./assets/js/script.js"></script>    
+    <script src="/assets/js/script.js"></script>
 </body>
 </html>
