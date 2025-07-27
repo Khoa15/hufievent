@@ -5,7 +5,7 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
-    background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(219, 219, 219, 0.4)), url('https://hufi.edu.vn/images/slide/hufi-2020-6.jpg');
+    background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(219, 219, 219, 0.4)), url('https://huit.edu.vn/images/slide/hufi-2020-6.jpg');
 }
 
 .home__container__slider {
@@ -546,7 +546,7 @@
     font-size: 30px;
     text-align: center;
     min-width: 400px;
-    background: url(https://hufi.edu.vn/images/bg_border_bottom_grey.png) no-repeat bottom center;
+    background: url(https://huit.edu.vn/images/bg_border_bottom_grey.png) no-repeat bottom center;
     background-size: 50%;
 }
 
